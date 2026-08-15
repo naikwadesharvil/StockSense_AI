@@ -4,17 +4,26 @@ Production REST API supporting Ridge, XGBoost, LSTM models,
 model benchmarking comparison, data quality lineage, Swagger OpenAPI, and TTL caching.
 """
 
-from fastapi import FastAPI, Query, HTTPException, Body
+from fastapi import FastAPI, Query, HTTPException, Body, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional, Dict, Any
 
 from backend.config import settings
 from backend.services.stock_data import StockDataService
+from backend.services.stock_registry import StockRegistry
 from backend.services.indicators import IndicatorService
 from backend.services.forecast_service import ForecastService
 from backend.services.sentiment_service import SentimentService
 from backend.services.comparison_service import ComparisonService
 from backend.services.cache_service import cache_manager, get_current_ist_timestamp
+from backend.services.payments import (
+    SUBSCRIPTION_PLANS,
+    EntitlementManager,
+    get_payment_provider,
+    StripePaymentProvider,
+    RazorpayPaymentProvider,
+    SubscriptionStatus
+)
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -24,7 +33,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -52,9 +61,19 @@ def health_check():
         "cache_stats": cache_manager.get_all_stats()
     }
 
+@app.get("/api/search")
+def unified_search(q: str = Query("", description="Stock name, symbol, or market sector")):
+    results = StockRegistry.search(q)
+    return {
+        "query": q,
+        "count": len(results),
+        "results": [s.to_dict() for s in results]
+    }
+
 @app.get("/api/stocks/search")
 def search_stocks(q: str = Query("", description="Stock name, symbol, or market sector")):
-    return StockDataService.search_stocks(q)
+    results = StockRegistry.search(q)
+    return [s.to_dict() for s in results]
 
 @app.get("/api/stocks/{symbol}")
 def get_stock_overview(symbol: str):
@@ -71,7 +90,7 @@ def get_data_quality(symbol: str):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.get("/api/stocks/{symbol}/history")
-def get_stock_history(symbol: str, timeframe: str = Query("1Y", regex="^(1D|5D|1M|3M|6M|1Y|5Y)$")):
+def get_stock_history(symbol: str, timeframe: str = Query("1Y", pattern="^(1D|5D|1M|3M|6M|1Y|5Y)$")):
     try:
         df = StockDataService.get_historical_data(symbol, timeframe=timeframe)
         return {
@@ -83,6 +102,7 @@ def get_stock_history(symbol: str, timeframe: str = Query("1Y", regex="^(1D|5D|1
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 @app.get("/api/stocks/{symbol}/indicators")
 def get_stock_indicators(symbol: str, timeframe: str = Query("1Y")):
@@ -143,6 +163,104 @@ def compare_stocks_post(payload: Dict[str, Any] = Body(...)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+# Payment & Entitlement Endpoints
+@app.get("/api/payments/plans")
+def get_subscription_plans():
+    plans = EntitlementManager.get_all_plans()
+    return {
+        "count": len(plans),
+        "plans": [p.to_dict() for p in plans]
+    }
+
+@app.get("/api/payments/status")
+def get_subscription_status(user_id: str = Query("default_user")):
+    sub = EntitlementManager.get_user_subscription(user_id)
+    return sub.to_dict()
+
+@app.post("/api/payments/checkout")
+def create_checkout(payload: Dict[str, Any] = Body(...)):
+    plan_id = payload.get("plan_id", "pro").lower()
+    provider_name = payload.get("provider", "stripe").lower()
+    currency = payload.get("currency", "USD").upper()
+    user_id = payload.get("user_id", "default_user")
+
+    plan = EntitlementManager.get_plan(plan_id)
+    if not plan:
+        raise HTTPException(status_code=400, detail=f"Invalid plan_id '{plan_id}'")
+
+    provider = get_payment_provider(provider_name)
+    if not provider.is_configured():
+        return {
+            "error": "PAYMENTS_NOT_CONFIGURED",
+            "message": f"Payment provider '{provider.get_provider_name()}' credentials are not configured in this environment.",
+            "is_configured": False,
+            "provider": provider.get_provider_name()
+        }
+
+    try:
+        success_url = payload.get("success_url", "http://localhost:8000/pricing?status=success")
+        cancel_url = payload.get("cancel_url", "http://localhost:8000/pricing?status=canceled")
+        session = provider.create_checkout_session(
+            plan=plan,
+            user_id=user_id,
+            currency=currency,
+            success_url=success_url,
+            cancel_url=cancel_url
+        )
+        return {
+            "status": "success",
+            "session": session.to_dict()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Checkout creation failed: {str(e)}")
+
+@app.post("/api/payments/webhooks/stripe")
+async def stripe_webhook(request: Request):
+    provider = StripePaymentProvider()
+    post_body = await request.body()
+    headers_dict = dict(request.headers)
+    result = provider.verify_webhook(post_body, headers_dict)
+    if not result.success:
+        raise HTTPException(status_code=400, detail=result.message)
+
+    if result.status and result.subscription_id:
+        EntitlementManager.update_subscription(
+            user_id="default_user",
+            plan_id="pro",
+            provider="stripe",
+            subscription_id=result.subscription_id,
+            status=result.status,
+            currency="USD",
+            amount=29.0,
+            event_id=result.event_id
+        )
+
+    return {"received": True, "event_id": result.event_id}
+
+@app.post("/api/payments/webhooks/razorpay")
+async def razorpay_webhook(request: Request):
+    provider = RazorpayPaymentProvider()
+    post_body = await request.body()
+    headers_dict = dict(request.headers)
+    result = provider.verify_webhook(post_body, headers_dict)
+    if not result.success:
+        raise HTTPException(status_code=400, detail=result.message)
+
+    if result.status and result.subscription_id:
+        EntitlementManager.update_subscription(
+            user_id="default_user",
+            plan_id="pro",
+            provider="razorpay",
+            subscription_id=result.subscription_id,
+            status=result.status,
+            currency="INR",
+            amount=2400.0,
+            event_id=result.event_id
+        )
+
+    return {"received": True, "event_id": result.event_id}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("backend.main:app", host=settings.HOST, port=settings.PORT, reload=True)
+

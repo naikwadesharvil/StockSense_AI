@@ -21,10 +21,18 @@ const getApiBaseUrl = (): string => {
   if (import.meta.env?.VITE_API_URL) {
     return import.meta.env.VITE_API_URL.replace(/\/+$/, '');
   }
-  if (typeof window !== 'undefined' && (window.location.port === '8000' || window.location.port === '10000')) {
+  if (typeof window !== 'undefined') {
+    // If running in local Vite development server, point to local backend
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      if (window.location.port === '5173' || window.location.port === '3000') {
+        return 'http://localhost:8000';
+      }
+      return '';
+    }
+    // On production (e.g. Vercel deployment), use same-origin relative URLs
     return '';
   }
-  return 'http://localhost:8000';
+  return '';
 };
 
 const API_BASE_URL = getApiBaseUrl();
