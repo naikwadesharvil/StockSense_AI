@@ -42,8 +42,23 @@ app.add_middleware(
 
 router = APIRouter()
 
+import os
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_DIST = os.path.join(REPO_ROOT, "frontend", "dist")
+ASSETS_DIR = os.path.join(FRONTEND_DIST, "assets")
+
+if os.path.exists(ASSETS_DIR):
+    app.mount("/assets", StaticFiles(directory=ASSETS_DIR), name="assets")
+
 @app.get("/")
+@app.get("/index.html")
 def root():
+    index_file = os.path.join(FRONTEND_DIST, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
     return {
         "name": settings.PROJECT_NAME,
         "version": "2.0.0",
