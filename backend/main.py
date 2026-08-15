@@ -2,9 +2,10 @@
 StockSense AI V2 - FastAPI Main Application
 Production REST API supporting Ridge, XGBoost, LSTM models,
 model benchmarking comparison, data quality lineage, Swagger OpenAPI, and TTL caching.
+Supports both Vercel Serverless Function routing (sub-path invocation) and standalone prefixed routing.
 """
 
-from fastapi import FastAPI, Query, HTTPException, Body, Request, Response
+from fastapi import FastAPI, APIRouter, Query, HTTPException, Body, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional, Dict, Any
 
@@ -39,6 +40,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+router = APIRouter()
+
 @app.get("/")
 def root():
     return {
@@ -51,7 +54,7 @@ def root():
         "disclaimer": "StockSense AI is an educational machine-learning platform. All forecasts are statistical model estimates and not financial advice."
     }
 
-@app.get("/api/health")
+@router.get("/health")
 def health_check():
     return {
         "status": "healthy",
@@ -61,7 +64,7 @@ def health_check():
         "cache_stats": cache_manager.get_all_stats()
     }
 
-@app.get("/api/search")
+@router.get("/search")
 def unified_search(q: str = Query("", description="Stock name, symbol, or market sector")):
     results = StockRegistry.search(q)
     return {
@@ -70,26 +73,26 @@ def unified_search(q: str = Query("", description="Stock name, symbol, or market
         "results": [s.to_dict() for s in results]
     }
 
-@app.get("/api/stocks/search")
+@router.get("/stocks/search")
 def search_stocks(q: str = Query("", description="Stock name, symbol, or market sector")):
     results = StockRegistry.search(q)
     return [s.to_dict() for s in results]
 
-@app.get("/api/stocks/{symbol}")
+@router.get("/stocks/{symbol}")
 def get_stock_overview(symbol: str):
     try:
         return StockDataService.get_stock_overview(symbol)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.get("/api/data/quality/{symbol}")
+@router.get("/data/quality/{symbol}")
 def get_data_quality(symbol: str):
     try:
         return StockDataService.get_data_quality_report(symbol)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.get("/api/stocks/{symbol}/history")
+@router.get("/stocks/{symbol}/history")
 def get_stock_history(symbol: str, timeframe: str = Query("1Y", pattern="^(1D|5D|1M|3M|6M|1Y|5Y)$")):
     try:
         df = StockDataService.get_historical_data(symbol, timeframe=timeframe)
@@ -103,8 +106,7 @@ def get_stock_history(symbol: str, timeframe: str = Query("1Y", pattern="^(1D|5D
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-
-@app.get("/api/stocks/{symbol}/indicators")
+@router.get("/stocks/{symbol}/indicators")
 def get_stock_indicators(symbol: str, timeframe: str = Query("1Y")):
     try:
         df = StockDataService.get_historical_data(symbol, timeframe=timeframe)
@@ -112,41 +114,41 @@ def get_stock_indicators(symbol: str, timeframe: str = Query("1Y")):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.get("/api/model/comparison/{symbol}")
+@router.get("/model/comparison/{symbol}")
 def get_model_comparison(symbol: str):
     try:
         return ForecastService.get_model_comparison(symbol)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Model comparison error: {str(e)}")
 
-@app.get("/api/forecast/{symbol}")
+@router.get("/forecast/{symbol}")
 def get_stock_forecast(symbol: str, model: str = Query("validation_selected", description="Model: ridge | xgboost | lstm | validation_selected")):
     try:
         return ForecastService.get_forecast(symbol, model_type=model)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Forecasting error: {str(e)}")
 
-@app.post("/api/forecast")
+@router.post("/forecast")
 def post_stock_forecast(payload: Dict[str, Any] = Body(...)):
     symbol = payload.get("symbol", "AAPL")
     model_type = payload.get("model_type", "validation_selected")
     return get_stock_forecast(symbol, model=model_type)
 
-@app.get("/api/model/performance/{symbol}")
+@router.get("/model/performance/{symbol}")
 def get_model_performance(symbol: str, model: str = Query("validation_selected")):
     try:
         return ForecastService.get_model_performance(symbol, model_type=model)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/news/{symbol}")
+@router.get("/news/{symbol}")
 def get_stock_news_sentiment(symbol: str):
     try:
         return SentimentService.get_stock_sentiment(symbol)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.get("/api/compare")
+@router.get("/compare")
 def compare_stocks_get(symbols: str = Query(..., description="Comma-separated symbols, e.g. AAPL,MSFT,NVDA"), timeframe: str = Query("6M")):
     sym_list = [s.strip() for s in symbols.split(",") if s.strip()]
     try:
@@ -154,7 +156,7 @@ def compare_stocks_get(symbols: str = Query(..., description="Comma-separated sy
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.post("/api/compare")
+@router.post("/compare")
 def compare_stocks_post(payload: Dict[str, Any] = Body(...)):
     symbols = payload.get("symbols", ["AAPL", "MSFT"])
     timeframe = payload.get("timeframe", "6M")
@@ -164,7 +166,7 @@ def compare_stocks_post(payload: Dict[str, Any] = Body(...)):
         raise HTTPException(status_code=400, detail=str(e))
 
 # Payment & Entitlement Endpoints
-@app.get("/api/payments/plans")
+@router.get("/payments/plans")
 def get_subscription_plans():
     plans = EntitlementManager.get_all_plans()
     return {
@@ -172,12 +174,12 @@ def get_subscription_plans():
         "plans": [p.to_dict() for p in plans]
     }
 
-@app.get("/api/payments/status")
+@router.get("/payments/status")
 def get_subscription_status(user_id: str = Query("default_user")):
     sub = EntitlementManager.get_user_subscription(user_id)
     return sub.to_dict()
 
-@app.post("/api/payments/checkout")
+@router.post("/payments/checkout")
 def create_checkout(payload: Dict[str, Any] = Body(...)):
     plan_id = payload.get("plan_id", "pro").lower()
     provider_name = payload.get("provider", "stripe").lower()
@@ -214,7 +216,7 @@ def create_checkout(payload: Dict[str, Any] = Body(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Checkout creation failed: {str(e)}")
 
-@app.post("/api/payments/webhooks/stripe")
+@router.post("/payments/webhooks/stripe")
 async def stripe_webhook(request: Request):
     provider = StripePaymentProvider()
     post_body = await request.body()
@@ -237,7 +239,7 @@ async def stripe_webhook(request: Request):
 
     return {"received": True, "event_id": result.event_id}
 
-@app.post("/api/payments/webhooks/razorpay")
+@router.post("/payments/webhooks/razorpay")
 async def razorpay_webhook(request: Request):
     provider = RazorpayPaymentProvider()
     post_body = await request.body()
@@ -260,7 +262,11 @@ async def razorpay_webhook(request: Request):
 
     return {"received": True, "event_id": result.event_id}
 
+# Mount the router under both prefix="" (for Vercel serverless /api dispatch)
+# and prefix="/api" (for direct root calls or standard local proxies)
+app.include_router(router, prefix="")
+app.include_router(router, prefix="/api")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("backend.main:app", host=settings.HOST, port=settings.PORT, reload=True)
-
