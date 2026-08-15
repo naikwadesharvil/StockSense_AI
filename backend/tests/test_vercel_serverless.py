@@ -103,15 +103,15 @@ class TestVercelServerlessDeployment(unittest.TestCase):
         self.assertFalse(data.get("is_configured"))
 
     def test_08_vercel_json_configuration(self):
-        """Verify that vercel.json exists, is valid JSON, and contains API rewrites."""
+        """Verify that vercel.json exists, is valid JSON, and contains SPA rewrites."""
         vercel_json_path = os.path.join(REPO_ROOT, "vercel.json")
         self.assertTrue(os.path.exists(vercel_json_path))
         with open(vercel_json_path, "r", encoding="utf-8") as f:
             config = json.load(f)
         self.assertIn("rewrites", config)
+        self.assertEqual(config.get("outputDirectory"), "frontend/dist")
         sources = [r["source"] for r in config["rewrites"]]
-        self.assertIn("/api/(.*)", sources)
-        self.assertIn("/(.*)", sources)
+        self.assertIn("/((?!api/|assets/).*)", sources)
 
     def test_09_academic_benchmark_invariance(self):
         """Verify that academic holdout RMSE metrics remain 100% invariant."""
