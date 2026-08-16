@@ -15,6 +15,7 @@ import { WatchlistView } from './components/views/WatchlistView';
 import { SentimentView } from './components/views/SentimentView';
 import { PricingView } from './components/views/PricingView';
 import { AboutView } from './components/views/AboutView';
+import { TrendingView } from './components/views/TrendingView';
 
 export const App: React.FC = () => {
   const { currentView } = useStock();
@@ -41,6 +42,8 @@ export const App: React.FC = () => {
         return <PricingView />;
       case 'about':
         return <AboutView />;
+      case 'trending':
+        return <TrendingView />;
       default:
         return <LandingView />;
     }

@@ -16,8 +16,9 @@ def get_payment_provider(provider_name: Optional[str] = None) -> BasePaymentProv
     """
     Returns the configured payment provider instance.
     Defaults to 'stripe' or configured system default.
+    Raises ValueError if an unsupported provider name is specified.
     """
-    p_name = (provider_name or os.getenv("DEFAULT_PAYMENT_PROVIDER", "stripe")).lower()
+    p_name = (provider_name or os.getenv("DEFAULT_PAYMENT_PROVIDER", "stripe")).strip().lower()
 
     if p_name == "stripe":
         return StripePaymentProvider()
@@ -26,5 +27,4 @@ def get_payment_provider(provider_name: Optional[str] = None) -> BasePaymentProv
     elif p_name in ["sandbox", "mock", "sandbox_mock"]:
         return MockSandboxPaymentProvider()
 
-    # Fallback to Stripe provider
-    return StripePaymentProvider()
+    raise ValueError(f"Unsupported payment provider '{p_name}'. Supported providers: stripe, razorpay, sandbox_mock")

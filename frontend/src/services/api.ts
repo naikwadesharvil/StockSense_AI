@@ -12,7 +12,8 @@ import {
   Timeframe,
   ModelType,
   SubscriptionPlan,
-  SubscriptionRecord
+  SubscriptionRecord,
+  NiftyTrendingResponse
 } from '../types/stock';
 import { POPULAR_STOCKS, generateHistoricalSeries } from './mockData';
 import { ClientMLEngine } from './mlEngine';
@@ -446,6 +447,21 @@ export const StockAPI = {
     } catch (e: any) {
       return { status: 'error', error: 'NETWORK_ERROR', message: e?.message || 'Failed to connect to checkout service.' };
     }
+  },
+
+  async getNiftyTrending(forceRefresh: boolean = false): Promise<NiftyTrendingResponse | null> {
+    return deduplicatedFetch(forceRefresh ? `nifty_trending_${Date.now()}` : 'nifty_trending', async () => {
+      const useBackend = await checkBackend();
+      if (useBackend) {
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/stocks/trending/nifty50${forceRefresh ? '?refresh=true' : ''}`);
+          if (res.ok) return await res.json();
+        } catch (e) {
+          console.warn('Backend NIFTY trending fetch failed', e);
+        }
+      }
+      return null;
+    }, 45000);
   }
 };
 

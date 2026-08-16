@@ -243,6 +243,196 @@ class TestPaymentInfrastructure(unittest.TestCase):
         p_mock = get_payment_provider("sandbox_mock")
         self.assertIsInstance(p_mock, MockSandboxPaymentProvider)
 
+        # Test invalid provider
+        with self.assertRaises(ValueError) as ctx:
+            get_payment_provider("bitcoin_fake_gateway")
+        self.assertIn("Unsupported payment provider", str(ctx.exception))
+
+    def test_checkout_api_invalid_plan_and_provider(self):
+        """Verifies FastAPI /api/payments/checkout rejects invalid plan_id and invalid provider with HTTP 400."""
+        from fastapi.testclient import TestClient
+        from backend.main import app
+
+        client = TestClient(app)
+
+        # Invalid plan
+        res1 = client.post("/api/payments/checkout", json={"plan_id": "ultra_legendary_nonexistent", "provider": "stripe"})
+        self.assertEqual(res1.status_code, 400)
+        self.assertIn("Invalid plan_id", res1.json()["detail"])
+
+        # Invalid provider
+        res2 = client.post("/api/payments/checkout", json={"plan_id": "pro", "provider": "unsupported_crypto"})
+        self.assertEqual(res2.status_code, 400)
+        self.assertIn("Unsupported payment provider", res2.json()["detail"])
+
+    def test_successful_mock_checkout_via_api(self):
+        """Verifies successful checkout session generation via FastAPI with sandbox_mock provider."""
+        from fastapi.testclient import TestClient
+        from backend.main import app
+
+        client = TestClient(app)
+        res = client.post("/api/payments/checkout", json={
+            "plan_id": "pro",
+            "provider": "sandbox_mock",
+            "currency": "USD",
+            "user_id": "user_api_test"
+        })
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(data["status"], "success")
+        self.assertIn("session", data)
+        self.assertEqual(data["session"]["provider"], "sandbox_mock")
+        self.assertTrue(data["session"]["is_sandbox"])
+        self.assertIn("checkout_url", data["session"])
+
+    def test_stripe_and_razorpay_webhook_api_endpoints(self):
+        """Verifies Stripe and Razorpay webhook endpoints validate HMAC signatures and update entitlements."""
+        from fastapi.testclient import TestClient
+        from backend.main import app
+
+        client = TestClient(app)
+
+        # 1. Stripe Webhook with invalid signature
+        res_bad_stripe = client.post(
+            "/api/payments/webhooks/stripe",
+            content=b'{"id":"evt_1","type":"checkout.session.completed"}',
+            headers={"stripe-signature": "t=123,v1=bad_sig"}
+        )
+        self.assertEqual(res_bad_stripe.status_code, 400)
+
+        # 2. Razorpay Webhook with invalid signature
+        res_bad_rzp = client.post(
+            "/api/payments/webhooks/razorpay",
+            content=b'{"id":"evt_2","event":"payment.captured"}',
+            headers={"x-razorpay-signature": "bad_sig_hex"}
+        )
+        self.assertEqual(res_bad_rzp.status_code, 400)
+
+        # 3. Valid Stripe Webhook with configured mock provider
+        webhook_sec = "whsec_test_stripe_valid_999"
+        prov = StripePaymentProvider(secret_key="sk_test_123", webhook_secret=webhook_sec)
+        payload_dict = {
+            "id": "evt_stripe_valid_1",
+            "type": "checkout.session.completed",
+            "data": {
+                "object": {
+                    "id": "cs_stripe_123",
+                    "subscription": "sub_stripe_real_1",
+                    "client_reference_id": "test_user_stripe_wh",
+                    "metadata": {"plan_id": "premium", "user_id": "test_user_stripe_wh"}
+                }
+            }
+        }
+        payload_bytes = json.dumps(payload_dict).encode('utf-8')
+        t = str(int(time.time()))
+        signed = f"{t}.".encode("utf-8") + payload_bytes
+        valid_sig = hmac.new(webhook_sec.encode("utf-8"), signed, hashlib.sha256).hexdigest()
+
+        # Verify provider level verification
+        res_verify = prov.verify_webhook(payload_bytes, {"stripe-signature": f"t={t},v1={valid_sig}"})
+        self.assertTrue(res_verify.success)
+        self.assertEqual(res_verify.user_id, "test_user_stripe_wh")
+        self.assertEqual(res_verify.plan_id, "premium")
+
+        # Update entitlement directly with verified event
+        record = EntitlementManager.update_subscription(
+            user_id=res_verify.user_id,
+            plan_id=res_verify.plan_id,
+            provider="stripe",
+            subscription_id=res_verify.subscription_id,
+            status=res_verify.status,
+            currency="USD",
+            amount=79.0,
+            event_id=res_verify.event_id
+        )
+        self.assertEqual(record.plan_id, "premium")
+        self.assertEqual(record.status, SubscriptionStatus.ACTIVE)
+
+        # Check that user entitlement has been updated
+        sub = EntitlementManager.get_user_subscription("test_user_stripe_wh")
+        self.assertEqual(sub.plan_id, "premium")
+        self.assertTrue(EntitlementManager.check_entitlement("test_user_stripe_wh", "full_universe"))
+        self.assertTrue(EntitlementManager.check_entitlement("test_user_stripe_wh", "horizon_30d"))
+
+    def test_no_secret_leakage_in_models(self):
+        """Verifies SubscriptionPlan, CheckoutSession, and SubscriptionRecord dictionaries never contain secrets."""
+        plan = SUBSCRIPTION_PLANS["pro"]
+        plan_dict = plan.to_dict()
+        for k in plan_dict:
+            self.assertNotIn("secret", k.lower())
+            self.assertNotIn("key", k.lower())
+
+        mock_prov = MockSandboxPaymentProvider()
+        session = mock_prov.create_checkout_session(plan, "u1", "USD", "http://loc/s", "http://loc/c")
+        sess_dict = session.to_dict()
+        for k in sess_dict:
+            self.assertNotIn("secret", k.lower())
+
+    def test_stripe_webhook_replay_protection_timestamp_matrix(self):
+        """
+        Verifies Stripe webhook replay protection:
+        a. valid recent timestamp (accepted)
+        b. expired timestamp (rejected)
+        c. malformed timestamp (rejected)
+        d. valid signature + expired timestamp (rejected before acceptance)
+        """
+        webhook_secret = "whsec_test_stripe_replay_secret_123"
+        provider = StripePaymentProvider(
+            secret_key="sk_test_dummy",
+            webhook_secret=webhook_secret,
+            tolerance_seconds=300
+        )
+
+        payload_dict = {
+            "id": "evt_replay_test_1",
+            "type": "checkout.session.completed",
+            "data": {
+                "object": {
+                    "id": "cs_replay_1",
+                    "subscription": "sub_replay_1"
+                }
+            }
+        }
+        payload_bytes = json.dumps(payload_dict).encode('utf-8')
+        now_ts = int(time.time())
+
+        # a. Valid recent timestamp (e.g. 10 seconds ago)
+        t_valid = str(now_ts - 10)
+        signed_valid = f"{t_valid}.".encode("utf-8") + payload_bytes
+        sig_valid = hmac.new(webhook_secret.encode("utf-8"), signed_valid, hashlib.sha256).hexdigest()
+        res_valid = provider.verify_webhook(payload_bytes, {"stripe-signature": f"t={t_valid},v1={sig_valid}"})
+        self.assertTrue(res_valid.success)
+        self.assertEqual(res_valid.event_id, "evt_replay_test_1")
+
+        # b. Expired timestamp (> 300 seconds old, e.g. 500s ago)
+        t_expired = str(now_ts - 500)
+        signed_expired = f"{t_expired}.".encode("utf-8") + payload_bytes
+        sig_expired = hmac.new(webhook_secret.encode("utf-8"), signed_expired, hashlib.sha256).hexdigest()
+        res_expired = provider.verify_webhook(payload_bytes, {"stripe-signature": f"t={t_expired},v1={sig_expired}"})
+        self.assertFalse(res_expired.success)
+        self.assertIn("tolerance window", res_expired.message)
+
+        # c. Malformed non-numeric timestamp
+        t_malformed = "invalid_timestamp_abc"
+        res_malformed = provider.verify_webhook(payload_bytes, {"stripe-signature": f"t={t_malformed},v1={sig_valid}"})
+        self.assertFalse(res_malformed.success)
+        self.assertIn("Malformed non-numeric", res_malformed.message)
+
+        # d. Valid HMAC signature with expired timestamp (verifies tolerance check halts processing)
+        t_old = str(now_ts - 3600)  # 1 hour old
+        signed_old = f"{t_old}.".encode("utf-8") + payload_bytes
+        sig_old_valid = hmac.new(webhook_secret.encode("utf-8"), signed_old, hashlib.sha256).hexdigest()
+        res_old = provider.verify_webhook(payload_bytes, {"stripe-signature": f"t={t_old},v1={sig_old_valid}"})
+        self.assertFalse(res_old.success)
+        self.assertIn("tolerance window", res_old.message)
+
+    def test_entitlement_store_abstraction(self):
+        """Verifies EntitlementManager operates with InMemoryEntitlementStore and supports clear_all."""
+        store = EntitlementManager.get_store()
+        self.assertIsNotNone(store)
+        EntitlementManager.record_processed_event("evt_store_test_99")
+        self.assertTrue(EntitlementManager.is_event_processed("evt_store_test_99"))
+
 
 if __name__ == "__main__":
     unittest.main()

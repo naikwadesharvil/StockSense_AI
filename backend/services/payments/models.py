@@ -91,6 +91,8 @@ class WebhookEventResult:
     status: Optional[SubscriptionStatus] = None
     message: str = ""
     is_duplicate: bool = False
+    user_id: Optional[str] = None
+    plan_id: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)

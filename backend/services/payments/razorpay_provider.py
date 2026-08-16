@@ -151,6 +151,10 @@ class RazorpayPaymentProvider(BasePaymentProvider):
             if "halted" in event_type or "cancelled" in event_type:
                 status = SubscriptionStatus.CANCELED
 
+            notes = entity.get("notes", {}) or event.get("payload", {}).get("payment_link", {}).get("entity", {}).get("notes", {})
+            user_id = notes.get("user_id", "default_user")
+            plan_id = notes.get("plan_id", "pro")
+
             return WebhookEventResult(
                 event_id=event_id,
                 event_type=event_type,
@@ -158,7 +162,9 @@ class RazorpayPaymentProvider(BasePaymentProvider):
                 success=True,
                 subscription_id=sub_id,
                 status=status,
-                message=f"Razorpay event {event_type} verified"
+                message=f"Razorpay event {event_type} verified",
+                user_id=user_id,
+                plan_id=plan_id
             )
         except Exception as e:
             return WebhookEventResult(

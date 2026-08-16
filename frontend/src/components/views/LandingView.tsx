@@ -183,6 +183,31 @@ export const LandingView: React.FC = () => {
         </div>
       </section>
 
+      {/* Featured NIFTY 50 Trending Banner */}
+      <section className="bg-gradient-to-r from-slate-900 via-indigo-950/60 to-slate-900 border border-indigo-500/30 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 max-w-xl">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider">
+            <span>⚡ Multi-Factor Volumetric Trend Score</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-extrabold text-white">
+            NIFTY 50 Trending Equities Radar
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Real-time algorithmic ranking of all 50 NSE blue chips using return magnitude, 30-day relative volume surge (RVOL), and intraday spread volatility.
+          </p>
+        </div>
+
+        <button
+          onClick={() => setCurrentView('trending')}
+          className="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-indigo-600/30 transition-all whitespace-nowrap flex items-center gap-2 shrink-0"
+        >
+          <span>Open NIFTY Trending Radar</span>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </button>
+      </section>
+
       {/* Quick Launch Equities Picker */}
       <section className="bg-gradient-to-r from-indigo-900/20 via-purple-900/20 to-slate-900 border border-indigo-500/20 rounded-2xl p-6 sm:p-8">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">

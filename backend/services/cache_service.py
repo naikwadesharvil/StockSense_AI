@@ -115,6 +115,29 @@ class CacheManager:
         self.forecast_cache = TTLCache(default_ttl_seconds=self.FORECAST_TTL)
         self.sentiment_cache = TTLCache(default_ttl_seconds=self.SENTIMENT_TTL)
         self.comparison_cache = TTLCache(default_ttl_seconds=self.COMPARISON_TTL)
+        self.nifty_trending_cache = TTLCache(default_ttl_seconds=300)
+
+    def get_partition(self, partition_name: str) -> TTLCache:
+        """Resolves TTL cache partition by name."""
+        if partition_name in ("nifty50_trending", "nifty_trending"):
+            return self.nifty_trending_cache
+        if partition_name == "historical":
+            return self.historical_cache
+        if partition_name == "indicators":
+            return self.indicators_cache
+        if partition_name == "overview":
+            return self.overview_cache
+        if partition_name == "fundamentals":
+            return self.fundamentals_cache
+        if partition_name == "model_comparison":
+            return self.model_comparison_cache
+        if partition_name == "forecast":
+            return self.forecast_cache
+        if partition_name == "sentiment":
+            return self.sentiment_cache
+        if partition_name == "comparison":
+            return self.comparison_cache
+        return self.overview_cache
 
     def get_or_compute(self, cache: TTLCache, key: str, compute_fn: Callable[[], Any], ttl_seconds: Optional[int] = None) -> Any:
         """Retrieves cached value or executes compute_fn, caches result, and returns it."""
@@ -134,7 +157,8 @@ class CacheManager:
             "model_comparison": self.model_comparison_cache.get_stats(),
             "forecast": self.forecast_cache.get_stats(),
             "sentiment": self.sentiment_cache.get_stats(),
-            "comparison": self.comparison_cache.get_stats()
+            "comparison": self.comparison_cache.get_stats(),
+            "nifty_trending": self.nifty_trending_cache.get_stats()
         }
 
     def clear_all(self) -> None:
@@ -145,6 +169,7 @@ class CacheManager:
         self.forecast_cache.clear()
         self.sentiment_cache.clear()
         self.comparison_cache.clear()
+        self.nifty_trending_cache.clear()
 
 # Global Singleton Cache Instance
 cache_manager = CacheManager()

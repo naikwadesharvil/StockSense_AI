@@ -78,5 +78,7 @@ class MockSandboxPaymentProvider(BasePaymentProvider):
             success=True,
             subscription_id=data.get("subscription_id", "sub_test_123"),
             status=SubscriptionStatus.ACTIVE,
-            message="Mock webhook verified"
+            message="Mock webhook verified",
+            user_id=data.get("user_id", "default_user"),
+            plan_id=data.get("plan_id", "pro")
         )

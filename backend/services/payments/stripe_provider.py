@@ -30,10 +30,12 @@ class StripePaymentProvider(BasePaymentProvider):
     def __init__(
         self,
         secret_key: Optional[str] = None,
-        webhook_secret: Optional[str] = None
+        webhook_secret: Optional[str] = None,
+        tolerance_seconds: int = 300
     ):
         self.secret_key = secret_key or os.getenv("STRIPE_SECRET_KEY", "")
         self.webhook_secret = webhook_secret or os.getenv("STRIPE_WEBHOOK_SECRET", "")
+        self.tolerance_seconds = tolerance_seconds
 
     def get_provider_name(self) -> str:
         return "stripe"
@@ -101,7 +103,8 @@ class StripePaymentProvider(BasePaymentProvider):
 
     def verify_webhook(self, payload: bytes, headers: Dict[str, str]) -> WebhookEventResult:
         """
-        Validates Stripe webhook signature header (t=...,v1=...) via HMAC-SHA256.
+        Validates Stripe webhook signature header (t=...,v1=...) via HMAC-SHA256
+        with strict timestamp validation and 300s replay tolerance protection.
         """
         sig_header = headers.get("stripe-signature") or headers.get("Stripe-Signature", "")
         if not sig_header:
@@ -141,7 +144,31 @@ class StripePaymentProvider(BasePaymentProvider):
                 message="Malformed Stripe-Signature header"
             )
 
-        # Recompute HMAC SHA256 over timestamp.payload
+        # 1. Strict numeric timestamp parsing
+        try:
+            ts_int = int(timestamp)
+        except (ValueError, TypeError):
+            return WebhookEventResult(
+                event_id="unknown",
+                event_type="error",
+                provider="stripe",
+                success=False,
+                message="Malformed non-numeric Stripe-Signature timestamp"
+            )
+
+        # 2. Timestamp tolerance / replay window check (default 300 seconds)
+        current_time = int(time.time())
+        time_diff = abs(current_time - ts_int)
+        if time_diff > self.tolerance_seconds:
+            return WebhookEventResult(
+                event_id="unknown",
+                event_type="error",
+                provider="stripe",
+                success=False,
+                message=f"Webhook timestamp outside tolerance window ({time_diff}s > {self.tolerance_seconds}s)"
+            )
+
+        # 3. Recompute HMAC SHA256 over timestamp.payload
         signed_payload = f"{timestamp}.".encode("utf-8") + payload
         computed_sig = hmac.new(
             self.webhook_secret.encode("utf-8"),
@@ -149,6 +176,7 @@ class StripePaymentProvider(BasePaymentProvider):
             hashlib.sha256
         ).hexdigest()
 
+        # 4. Constant-time signature comparison
         if not hmac.compare_digest(computed_sig, expected_sig):
             return WebhookEventResult(
                 event_id="unknown",
@@ -173,6 +201,11 @@ class StripePaymentProvider(BasePaymentProvider):
             elif event_type == "invoice.payment_failed":
                 status = SubscriptionStatus.PAST_DUE
 
+            # Extract user and plan context
+            metadata = data_obj.get("metadata", {})
+            user_id = data_obj.get("client_reference_id") or metadata.get("user_id") or "default_user"
+            plan_id = metadata.get("plan_id", "pro")
+
             return WebhookEventResult(
                 event_id=event_id,
                 event_type=event_type,
@@ -180,7 +213,9 @@ class StripePaymentProvider(BasePaymentProvider):
                 success=True,
                 subscription_id=sub_id,
                 status=status,
-                message=f"Event {event_type} verified"
+                message=f"Event {event_type} verified",
+                user_id=user_id,
+                plan_id=plan_id
             )
         except Exception as e:
             return WebhookEventResult(

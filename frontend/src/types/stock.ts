@@ -20,7 +20,8 @@ export type AppView =
   | 'watchlist'
   | 'sentiment'
   | 'pricing'
-  | 'about';
+  | 'about'
+  | 'trending';
 
 export interface DataProvenance {
   source: string;
@@ -364,5 +365,61 @@ export interface SubscriptionRecord {
   current_period_start: string;
   current_period_end: string;
   cancel_at_period_end?: boolean;
+}
+
+export interface NiftyTrendingStock {
+  rank: number;
+  symbol: string;
+  company_name: string;
+  exchange: string;
+  sector: string;
+  currency: string;
+  currency_symbol: string;
+  current_price: number;
+  previous_close: number;
+  daily_change: number;
+  daily_change_percentage: number;
+  volume: number;
+  average_volume_30d: number;
+  relative_volume: number;
+  trend_score: number;
+  trend_category: string;
+  market_cap?: string;
+  provenance: DataProvenance;
+}
+
+export interface NiftyRankingMethodology {
+  name: string;
+  version: string;
+  formula: string;
+  description: string;
+  weights: {
+    return_magnitude: number;
+    relative_volume: number;
+    intraday_volatility: number;
+  };
+}
+
+export interface NiftyTrendingResponse {
+  index: string;
+  index_name: string;
+  market_status: 'OPEN' | 'CLOSED' | 'PRE_MARKET' | 'AFTER_HOURS' | 'UNKNOWN';
+  is_market_open: boolean;
+  timestamp: string;
+  data_as_of: string;
+  ranking_methodology: NiftyRankingMethodology;
+  total_stocks_evaluated: number;
+  total_stocks_ranked: number;
+  top_gainers_count: number;
+  top_losers_count: number;
+  unchanged_count: number;
+  ranked_stocks: NiftyTrendingStock[];
+  provenance_summary: {
+    freshness: string;
+    provider: string;
+    market_status: string;
+    is_live: boolean;
+    timestamp_ist: string;
+  };
 }
 

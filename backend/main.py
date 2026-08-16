@@ -17,6 +17,7 @@ from backend.services.forecast_service import ForecastService
 from backend.services.sentiment_service import SentimentService
 from backend.services.comparison_service import ComparisonService
 from backend.services.cache_service import cache_manager, get_current_ist_timestamp
+from backend.services.nifty_service import NiftyService
 from backend.services.payments import (
     SUBSCRIPTION_PLANS,
     EntitlementManager,
@@ -180,6 +181,14 @@ def compare_stocks_post(payload: Dict[str, Any] = Body(...)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+# NIFTY 50 Trending Stocks Endpoint
+@router.get("/stocks/trending/nifty50")
+def get_nifty50_trending(refresh: bool = Query(False, description="Force cache refresh")):
+    try:
+        return NiftyService.get_trending_nifty50(force_refresh=refresh)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch NIFTY 50 trending data: {str(e)}")
+
 # Payment & Entitlement Endpoints
 @router.get("/payments/plans")
 def get_subscription_plans():
@@ -205,7 +214,11 @@ def create_checkout(payload: Dict[str, Any] = Body(...)):
     if not plan:
         raise HTTPException(status_code=400, detail=f"Invalid plan_id '{plan_id}'")
 
-    provider = get_payment_provider(provider_name)
+    try:
+        provider = get_payment_provider(provider_name)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
     if not provider.is_configured():
         return {
             "error": "PAYMENTS_NOT_CONFIGURED",
@@ -241,14 +254,18 @@ async def stripe_webhook(request: Request):
         raise HTTPException(status_code=400, detail=result.message)
 
     if result.status and result.subscription_id:
+        user_id = result.user_id or "default_user"
+        plan_id = result.plan_id or "pro"
+        plan = EntitlementManager.get_plan(plan_id)
+        amount = plan.price_usd if plan else 29.0
         EntitlementManager.update_subscription(
-            user_id="default_user",
-            plan_id="pro",
+            user_id=user_id,
+            plan_id=plan_id,
             provider="stripe",
             subscription_id=result.subscription_id,
             status=result.status,
             currency="USD",
-            amount=29.0,
+            amount=amount,
             event_id=result.event_id
         )
 
@@ -264,14 +281,18 @@ async def razorpay_webhook(request: Request):
         raise HTTPException(status_code=400, detail=result.message)
 
     if result.status and result.subscription_id:
+        user_id = result.user_id or "default_user"
+        plan_id = result.plan_id or "pro"
+        plan = EntitlementManager.get_plan(plan_id)
+        amount = plan.price_inr if plan else 2400.0
         EntitlementManager.update_subscription(
-            user_id="default_user",
-            plan_id="pro",
+            user_id=user_id,
+            plan_id=plan_id,
             provider="razorpay",
             subscription_id=result.subscription_id,
             status=result.status,
             currency="INR",
-            amount=2400.0,
+            amount=amount,
             event_id=result.event_id
         )
 
