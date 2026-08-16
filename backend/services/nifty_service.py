@@ -8,7 +8,6 @@ from dataclasses import dataclass, asdict
 from typing import Dict, List, Any, Optional
 from datetime import datetime, timezone, timedelta, time as dt_time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import pytz
 
 from backend.services.cache_service import (
     cache_manager,
