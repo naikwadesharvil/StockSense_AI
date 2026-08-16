@@ -193,9 +193,13 @@ class EntitlementManager:
     Delegates to a configured BaseEntitlementStore instance (defaults to InMemoryEntitlementStore).
     """
 
-    _store: BaseEntitlementStore = InMemoryEntitlementStore()
-    _user_subscriptions: Dict[str, SubscriptionRecord] = _store._user_subscriptions
-    _processed_events: Dict[str, datetime] = _store._processed_events
+    _store: BaseEntitlementStore = get_default_entitlement_store()
+    _user_subscriptions: Dict[str, SubscriptionRecord] = (
+        _store._user_subscriptions if isinstance(_store, InMemoryEntitlementStore) else {}
+    )
+    _processed_events: Dict[str, datetime] = (
+        _store._processed_events if isinstance(_store, InMemoryEntitlementStore) else {}
+    )
 
     @classmethod
     def set_store(cls, store: BaseEntitlementStore) -> None:
@@ -204,6 +208,9 @@ class EntitlementManager:
         if isinstance(store, InMemoryEntitlementStore):
             cls._user_subscriptions = store._user_subscriptions
             cls._processed_events = store._processed_events
+        else:
+            cls._user_subscriptions = {}
+            cls._processed_events = {}
 
     @classmethod
     def clear_all(cls) -> None:
