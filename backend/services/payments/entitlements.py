@@ -118,6 +118,10 @@ class BaseEntitlementStore(ABC):
         pass
 
 
+# Explicit alias for architecture clarity
+EntitlementStoreInterface = BaseEntitlementStore
+
+
 class InMemoryEntitlementStore(BaseEntitlementStore):
     """
     Thread-safe in-memory entitlement and idempotency store.
@@ -149,6 +153,38 @@ class InMemoryEntitlementStore(BaseEntitlementStore):
         with self._lock:
             self._user_subscriptions.clear()
             self._processed_events.clear()
+
+
+def get_default_entitlement_store() -> BaseEntitlementStore:
+    """
+    Instantiates and returns the appropriate entitlement store based on environment variables.
+    If database credentials (Supabase/PostgreSQL) are present, returns PostgresSupabaseEntitlementStore.
+    If in production mode (APP_ENV=production) without credentials, raises PersistenceConfigurationError.
+    Otherwise defaults to InMemoryEntitlementStore for local testing/sandbox.
+    """
+    import os
+    from backend.services.payments.supabase_store import (
+        PostgresSupabaseEntitlementStore,
+        PersistenceConfigurationError
+    )
+
+    persistence_mode = os.getenv("PAYMENT_PERSISTENCE", "").strip().lower()
+    app_env = os.getenv("APP_ENV", "development").strip().lower()
+    require_persistence = (
+        os.getenv("REQUIRE_PERSISTENCE", "false").strip().lower() == "true"
+        or app_env == "production"
+        or persistence_mode in ["postgres", "postgresql", "supabase"]
+    )
+
+    has_supabase = bool(os.getenv("SUPABASE_URL") or os.getenv("NEXT_PUBLIC_SUPABASE_URL"))
+    has_postgres = bool(os.getenv("DATABASE_URL") or os.getenv("POSTGRES_URL") or os.getenv("SUPABASE_DB_URL"))
+
+    if has_supabase or has_postgres:
+        return PostgresSupabaseEntitlementStore(raise_if_unconfigured=require_persistence)
+    elif require_persistence:
+        return PostgresSupabaseEntitlementStore(raise_if_unconfigured=True)
+    else:
+        return InMemoryEntitlementStore()
 
 
 class EntitlementManager:

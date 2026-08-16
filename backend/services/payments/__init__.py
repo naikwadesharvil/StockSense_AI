@@ -13,7 +13,15 @@ from backend.services.payments.models import (
 from backend.services.payments.base import BasePaymentProvider
 from backend.services.payments.entitlements import (
     SUBSCRIPTION_PLANS,
-    EntitlementManager
+    EntitlementManager,
+    BaseEntitlementStore,
+    EntitlementStoreInterface,
+    InMemoryEntitlementStore,
+    get_default_entitlement_store
+)
+from backend.services.payments.supabase_store import (
+    PostgresSupabaseEntitlementStore,
+    PersistenceConfigurationError
 )
 from backend.services.payments.stripe_provider import StripePaymentProvider
 from backend.services.payments.razorpay_provider import RazorpayPaymentProvider
@@ -30,6 +38,12 @@ __all__ = [
     "BasePaymentProvider",
     "SUBSCRIPTION_PLANS",
     "EntitlementManager",
+    "BaseEntitlementStore",
+    "EntitlementStoreInterface",
+    "InMemoryEntitlementStore",
+    "PostgresSupabaseEntitlementStore",
+    "PersistenceConfigurationError",
+    "get_default_entitlement_store",
     "StripePaymentProvider",
     "RazorpayPaymentProvider",
     "MockSandboxPaymentProvider",
