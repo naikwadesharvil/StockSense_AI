@@ -1,4 +1,4 @@
-StockSense AI V2 — Project Progress & Production Roadmap
+  StockSense AI V2 — Project Progress & Production Roadmap
 
 Project: StockSense AI V2 — Intelligent Stock Forecasting & Market Analytics Platform
 Repository: naikwadesharvil/StockSense_AI
@@ -11,45 +11,25 @@ Current Status: 🟡 Release Candidate / Production Hardening in Progress
 StockSense AI V2 is a financial analytics and machine-learning platform combining:
 
 React 18 + Vite + TypeScript frontend
-
 FastAPI Python backend
-
 Vercel serverless deployment
-
 Yahoo Finance market-data integration
-
 Company fundamentals
-
 Technical indicators
-
 Stock search and comparison
-
 Financial news and NLP sentiment
-
 Multi-model stock forecasting
-
 NIFTY 50 trending/ranking
-
 Institutional financial dashboard
-
 Watchlist
-
 Model performance and backtesting
-
 Subscription plans
-
 Stripe and Razorpay payment adapters
-
 Sandbox/mock payment provider
-
 Supabase-backed persistent payment entitlements
-
 Automated backend regression tests
-
 Academic holdout benchmarking
-
 Market-data provenance and freshness tracking
-
 Financial Disclaimer
 
 StockSense AI is an educational and analytical platform.
@@ -57,219 +37,76 @@ StockSense AI is an educational and analytical platform.
 Forecasts are statistical model estimates and are not financial advice.
 
 2. Executive Status
-
-Area
-
-Status
-
-Assessment
-
-Core Backend
-
-✅
-
-Implemented and tested
-
-React Frontend
-
-✅
-
-Implemented and production-built
-
-Institutional Dashboard
-
-✅
-
-Redesigned and implemented
-
-Stock Overview
-
-✅
-
-Implemented
-
-Fundamentals
-
-✅
-
-Implemented
-
-Technical Analysis
-
-✅
-
-Implemented
-
-News & Sentiment
-
-✅
-
-Implemented
-
-ML Forecasting
-
-✅
-
-Implemented; methodology frozen
-
-Model Performance
-
-✅
-
-Implemented
-
-Stock Comparison
-
-✅
-
-Implemented
-
-Watchlist
-
-✅
-
-Implemented
-
-NIFTY 50 Trending
-
-✅
-
-Implemented and production-tested
-
-Settings
-
-✅
-
-Implemented
-
-Help & Support
-
-✅
-
-Implemented
-
-Pricing UI
-
-✅
-
-Implemented
-
-Payment Architecture
-
-✅
-
-Stripe/Razorpay/mock layers implemented
-
-Payment Security
-
-✅
-
-Webhook verification and idempotency implemented
-
-Supabase Schema
-
-✅
-
-Created and executed
-
-Supabase Persistence Code
-
-✅
-
-Implemented
-
-Real Supabase Persistence
-
-✅
-
-Verified against real Supabase
-
-Cross-Instance Persistence
-
-✅
-
-Verified
-
-Webhook Idempotency
-
-✅
-
-Verified against real Supabase
-
-Mock/Sandbox Infrastructure
-
-✅
-
-Implemented
-
-Provider Sandbox E2E
-
-🟡
-
-Final lifecycle verification pending
-
-Production Payment Configuration
-
-🔴
-
-Not activated
-
-Real-Money Payments
-
-🔴
-
-Blocked
-
-GitHub Frontend Checkpoint
-
-🟡
-
-Local commit created; push requires remote reconciliation
-
-Final Vercel Verification
-
-🟡
-
-Required after latest frontend push
-
+Area	Status	Assessment
+Core Backend	✅	Implemented and tested
+React Frontend	✅	Implemented and production-built
+Institutional Dashboard	✅	Redesigned and implemented
+Stock Overview	✅	Implemented
+Fundamentals	✅	Implemented
+Technical Analysis	✅	Implemented
+News & Sentiment	✅	Implemented
+ML Forecasting	✅	Implemented; methodology frozen
+Model Performance	✅	Implemented
+Stock Comparison	✅	Implemented
+Watchlist	✅	Implemented
+NIFTY 50 Trending	✅	Implemented and production-tested
+Settings	✅	Implemented
+Help & Support	✅	Implemented
+Pricing UI	✅	Implemented
+Payment Architecture	✅	Stripe/Razorpay/mock layers implemented
+Payment Security	✅	Webhook verification and idempotency implemented
+Supabase Schema	✅	Created and executed
+Supabase Persistence Code	✅	Implemented
+Real Supabase Persistence	✅	Verified against real Supabase
+Cross-Instance Persistence	✅	Verified
+Webhook Idempotency	✅	Verified against real Supabase
+Mock/Sandbox Infrastructure	✅	Implemented
+Provider Sandbox E2E	🟡	Final lifecycle verification pending
+Production Payment Configuration	🔴	Not activated
+Real-Money Payments	🔴	Blocked
+GitHub Frontend Checkpoint	🟡	Local commit created; push requires remote reconciliation
+Final Vercel Verification	🟡	Required after latest frontend push
 3. Completed Git Checkpoints
 
+Important development checkpoints:
+
 8611416 Serve static frontend bundle from FastAPI root for unified Vercel deployment
+
+
 7817799 Add payment hardening and NIFTY 50 trending
+
+
 db054df Fix serverless dependencies for Vercel Python runtime
+
+
 cc4c7aa Add persistent payment entitlements with Supabase
+
+
 789a7f5 Add persistent Supabase entitlement storage
+
+
 8b36e58 Complete institutional frontend redesign
-
 Latest Frontend Checkpoint
-
 Commit: 8b36e58
 Message: Complete institutional frontend redesign
+
 
 Status:
 ✅ Local commit created
 🟡 GitHub push rejected due to remote history divergence
 🟡 GitHub synchronization pending
 🟡 Final Vercel deployment verification pending
-
 Git Safety Rules
 
 Never commit:
 
 .env
-
 API keys
-
 payment secrets
-
 Supabase service-role keys
-
 database passwords
-
 node_modules
-
 cache files
-
 temporary test credentials
 
 Before release checkpoints:
@@ -278,7 +115,6 @@ git status
 git diff --check
 git diff --stat
 git log --oneline --decorate -10
-
 4. Vercel Deployment
 
 StockSense AI uses a unified Vercel deployment.
@@ -295,9 +131,7 @@ StockSense AI uses a unified Vercel deployment.
           +-----------+-----------+
                       |
                  Same Domain
-
 Production URL
-
 https://stock-sense-ai-eight.vercel.app
 
 The previous deployment was successfully verified for the core backend and frontend routes.
@@ -307,13 +141,9 @@ Final Release Requirement
 After the latest frontend commit is synchronized with GitHub:
 
 Allow Vercel to deploy.
-
 Verify deployment status.
-
 Run production API smoke tests.
-
 Verify all frontend routes.
-
 5. Production API Verification
 
 Previously verified production endpoints:
@@ -336,23 +166,14 @@ Previously verified core endpoints returned HTTP 200.
 The frontend uses:
 
 React 18
-
 TypeScript
-
 Vite
-
 Component-based architecture
-
 SPA navigation
-
 API service abstraction
-
 Responsive layout
-
 Institutional financial-terminal design system
-
 Main Views
-
 Landing
 Dashboard
 Stock Overview
@@ -367,7 +188,6 @@ Pricing
 Settings
 Help & Support
 About
-
 Frontend Production Build
 
 The institutional frontend redesign was successfully built using:
@@ -378,39 +198,25 @@ Verification:
 
 ✅ TypeScript compilation
 ✅ Vite production bundle
-✅ 0 build errors
+✅ 0 compilation errors
 ✅ Production bundle generated successfully
-
 7. Institutional Dashboard Redesign
 
 The frontend was redesigned into an institutional-style financial analytics terminal.
 
 Dashboard components
-
 Market ticker strip
-
 Market strength gauge
-
 Market overview
-
 Market trend chart
-
 Sector performance
-
 Top gainers
-
 Top losers
-
 NIFTY 50 heatmap
-
 AI market insight
-
 Active equity workbench
-
 Stock analytics
-
 Forecast integration
-
 Design system
 
 Primary visual tokens:
@@ -421,97 +227,79 @@ Primary visual tokens:
 #1E293B
 #10B981
 
+The interface uses:
+
+Dark analytical panels
+High-density financial tables
+Tabular numerical formatting
+Green/red market movement indicators
+Responsive cards
+Financial-terminal navigation
+Consistent chart styling
 8. Settings
 
 The Settings page provides:
 
-Dark, light, and system themes
-
+Display
+Dark theme
+Light theme
+System theme
 Chart presentation
-
 Compact density
-
 Reduced motion
-
+ML & Quant Engine
 Prediction horizon
-
 Model selection
-
 Confidence interval
-
 Technical lookback periods
-
+Market Telemetry
 Exchange priority
-
 Polling interval
-
 Data provenance badges
-
 RVOL alerts
-
+Data & Storage
 Watchlist export
-
-Cache purge
-
+Session cache purge
 Factory reset
-
-API latency diagnostics
-
+Diagnostics
+API latency
 ML engine status
-
 Payment sandbox status
-
 Persistence readiness
-
 9. Help & Support
 
 The Help & Support page includes:
 
 Searchable knowledge base
-
 FAQ categories
-
 ML forecasting explanations
-
 Technical indicator references
-
 Market-data information
-
 Sandbox billing information
-
 Keyboard shortcuts
-
 Mathematical references
-
 Support inquiry form
-
 Ticket generation
-
 10. Pricing
 
 Pricing includes:
 
 Free Explorer
-
 Pro Trader
-
 Institutional Elite
 
+The pricing UI supports:
+
 Monthly billing
-
 Annual billing
-
 USD
-
 INR
-
 Plan comparison
-
 Feature comparison
-
 Sandbox checkout
-
 Pricing Security Claims
+
+The Pricing page uses factual, architecture-based wording.
 
 ✅ Factual security/architecture descriptions
 ❌ No unsupported PCI-DSS certification claims
@@ -525,29 +313,23 @@ Only verified security properties should be presented as guarantees.
 The backend contains provider abstractions for:
 
 Yahoo Finance
-
 Commercial provider adapters
-
 Deterministic fallback/benchmark provider
 
-Market responses expose:
+The benchmark provider must remain isolated from live-market production behavior.
+
+Data Provenance
+
+Market responses expose information such as:
 
 Provider
-
 Symbol
-
 Exchange
-
 Currency
-
 Timestamp
-
 Timezone
-
 Market status
-
 Freshness
-
 Live/fallback state
 
 The application must never claim fallback or historical data is live.
@@ -557,71 +339,50 @@ The application must never claim fallback or historical data is live.
 Implemented functionality includes:
 
 Current price
-
 Previous close
-
 Daily change
-
 Daily change %
-
-Open / High / Low
-
-Volume / Average volume
-
+Open
+High
+Low
+Volume
+Average volume
 52-week range
-
 Market capitalization
-
 P/E
-
 Beta
-
 Dividend information
-
 Company description
-
 Fundamentals
-
 Provenance
 
-Previously verified examples:
+Previously verified examples include:
 
 AAPL
 RELIANCE
-
 13. ML Forecasting
-
 Models
 
+StockSense AI contains:
+
 Ridge Regression
-
 Gradient Boosted Decision Trees
-
 LSTM
-
 Model comparison and validation logic
-
 Validation Methodology
 
+The project uses:
+
 Chronological splitting
-
 Pre-test training/validation partition
-
 Untouched holdout test set
-
 Expanding walk-forward validation
-
 Validation-selected model architecture
-
 Multi-horizon forecasting
-
 Prediction intervals
-
 Baseline comparisons
-
 Critical Rule
-
-ML methodology is frozen.
+🔒 ML methodology is frozen.
 
 Do not modify the forecasting methodology during deployment, payment, or frontend work.
 
@@ -629,78 +390,37 @@ Do not modify the forecasting methodology during deployment, payment, or fronten
 
 Frozen final holdout RMSE values:
 
-Symbol
-
-Final Holdout RMSE
-
-AAPL
-
-$3.88
-
-MSFT
-
-$8.22
-
-NVDA
-
-$5.65
-
-TSLA
-
-$16.99
-
-RELIANCE
-
-₹39.09
-
-TCS
-
-₹65.35
-
-INFY
-
-₹38.39
-
-HDFCBANK
-
-₹26.36
+Symbol	Final Holdout RMSE
+AAPL	$3.88
+MSFT	$8.22
+NVDA	$5.65
+TSLA	$16.99
+RELIANCE	₹39.09
+TCS	₹65.35
+INFY	₹38.39
+HDFCBANK	₹26.36
 
 These values must remain invariant unless an explicitly approved ML research change is made.
 
 15. NIFTY 50 Trending
-
-Backend:
-
+Backend
 backend/services/nifty_service.py
-
-Frontend:
-
+Frontend
 frontend/src/components/views/TrendingView.tsx
-
-Production endpoint:
-
+Production endpoint
 /api/stocks/trending/nifty50
-
-Frontend route:
-
+Frontend route
 /trending
 
 Previously verified:
 
 ✅ HTTP 200
-
 ✅ 50 returned stocks
-
 ✅ 50 unique symbols
-
 ✅ Multi-factor trend scoring
-
 ✅ Ordinal ranking
-
 ✅ Constituent-level resilience
-
 ✅ Market-status reporting
-
 ✅ Data provenance
 
 During closed-market periods the system must correctly indicate that quotes are not live.
@@ -710,23 +430,16 @@ During closed-market periods the system must correctly indicate that quotes are 
 Implemented:
 
 Financial news ingestion
-
 RSS/news providers
-
 Publisher attribution
-
 Publication timestamps
-
 Sentiment scoring
-
 Financial/contextual sentiment
-
 Fallback behavior
 
 Production endpoint:
 
 /api/news/{symbol}
-
 17. Payment Architecture
 
 Payment modules:
@@ -750,83 +463,39 @@ Supported providers:
 Stripe
 Razorpay
 Mock Sandbox
-
 18. Payment Security
 
-Implemented safeguards:
+Implemented safeguards include:
 
 HMAC-SHA256 webhook verification
-
 Stripe timestamp replay protection
-
 Invalid signature rejection
-
 Webhook idempotency
-
 Subscription activation
-
 Cancellation handling
-
 Expiration handling
-
 Safe unconfigured-payment responses
-
 No card/CVV storage
-
 Secret scanning
 
 Production payment credentials must never be hardcoded.
 
 19. Payment Readiness
-
-Component
-
-Status
-
-Mock/Sandbox infrastructure
-
-✅
-
-Payment architecture
-
-✅
-
-Payment security
-
-✅
-
-Supabase persistence
-
-✅
-
-Real Supabase persistence
-
-✅
-
-Cross-instance persistence
-
-✅
-
-Webhook idempotency
-
-✅
-
-Provider sandbox E2E
-
-🟡
-
-Production Stripe/Razorpay configuration
-
-🔴
-
-Real-money payment activation
-
-🔴
+Component	Status
+Mock/Sandbox infrastructure	✅
+Payment architecture	✅
+Payment security	✅
+Supabase persistence	✅
+Real Supabase persistence	✅
+Cross-instance persistence	✅
+Webhook idempotency	✅
+Provider sandbox E2E	🟡
+Production Stripe/Razorpay configuration	🔴
+Real-money payment activation	🔴
 
 Payment architecture being complete does not mean live payments are enabled.
 
 20. Supabase Payment Persistence
-
 Original Problem
 
 The original entitlement system used:
@@ -865,11 +534,8 @@ Supabase/PostgreSQL
 The in-memory implementation remains available for:
 
 Unit tests
-
 Local development
-
 Sandbox/mock operation
-
 21. Supabase Database
 
 Schema:
@@ -888,7 +554,6 @@ Required production environment variables:
 SUPABASE_URL
 SUPABASE_SERVICE_ROLE_KEY
 PAYMENT_PERSISTENCE=supabase
-
 Security Rule
 
 SUPABASE_SERVICE_ROLE_KEY is server-side only.
@@ -896,24 +561,19 @@ SUPABASE_SERVICE_ROLE_KEY is server-side only.
 Never:
 
 Print it
-
 Commit it
-
 Expose it to React/Vite
-
 Place it in frontend JavaScript
-
 Return it through an API
-
 Log it
-
 22. Real Supabase Persistence Verification
-
 Status: ✅ COMPLETE
 
 Real Supabase persistence was successfully tested.
 
+Verification Results
 Real Supabase verification:
+
 
 ✅ Subscription write
 ✅ Fresh-process read
@@ -986,18 +646,18 @@ Latest reported backend test checkpoint:
 122 / 122 PASS
 0 failures
 0 errors
-
-Payment persistence tests:
-
+Payment persistence tests
 8 / 8 PASS
 
-Commands:
+Command:
 
 python -X utf8 -m unittest -v backend.tests.test_payment_persistence
 
+Full backend suite:
+
 python -X utf8 -m unittest discover -v -s backend/tests -p "test_*.py"
 
-Frontend build:
+Frontend production build:
 
 cd frontend
 npm run build
@@ -1007,7 +667,6 @@ Verified:
 ✅ TypeScript compilation
 ✅ Vite build
 ✅ 0 build errors
-
 26. Secret Scanning
 
 Previous audits found:
@@ -1029,9 +688,7 @@ SUPABASE_SERVICE_ROLE_KEY
 Run a secret scan before every production release.
 
 27. Current Remaining Work
-
 Phase A — GitHub Synchronization
-
 Status: 🟡
 
 Latest frontend commit:
@@ -1043,7 +700,6 @@ The commit exists locally.
 The previous push was rejected because the GitHub remote contains commits not present in the local branch.
 
 Required:
-
 git fetch origin
 git log --oneline --graph --decorate --all -10
 git status
@@ -1058,41 +714,27 @@ git push origin main
 Do not force-push.
 
 28. Phase B — Vercel Verification
-
 Status: 🟡
 
 After GitHub synchronization:
 
 Allow Vercel to deploy.
-
 Confirm deployment is Ready.
-
 Test /api/health.
-
 Test /api/payments/plans.
-
 Test stock APIs.
-
 Test forecasting.
-
 Test NIFTY 50 Trending.
-
 Test /.
-
 Test /trending.
-
 Test /settings.
-
 Test /help.
-
 Test /pricing.
-
 Check browser console for frontend errors.
 
 Do not activate live payments during this phase.
 
 29. Phase C — Sandbox Payment Testing
-
 Status: 🟡 NEXT MAJOR PAYMENT PHASE
 
 Use only:
@@ -1121,98 +763,56 @@ Fresh-Process Entitlement Read
 
 Test:
 
-Successful payment
-
-Failed payment
-
-Invalid signature
-
-Duplicate webhook
-
-Expired/replayed webhook
-
-Cancellation
-
-Expiration
-
-Entitlement activation
-
-Entitlement persistence after fresh process
-
+ Successful payment
+ Failed payment
+ Invalid signature
+ Duplicate webhook
+ Expired/replayed webhook
+ Cancellation
+ Expiration
+ Entitlement activation
+ Entitlement persistence after fresh process
 30. Production Payment Activation
-
 Status: 🔴 BLOCKED
 
 Real-money payment activation must remain blocked until every required operational gate passes.
 
 Completed
-
-Supabase schema created
-
-Supabase service-role access verified
-
-Real subscription write verified
-
-Fresh-process read verified
-
-Cross-instance persistence verified
-
-Cancellation persistence verified
-
-Webhook event persistence verified
-
-Duplicate webhook idempotency verified
-
-Temporary test records cleaned up
-
+ Supabase schema created
+ Supabase service-role access verified
+ Real subscription write verified
+ Fresh-process read verified
+ Cross-instance persistence verified
+ Cancellation persistence verified
+ Webhook event persistence verified
+ Duplicate webhook idempotency verified
+ Temporary test records cleaned up
 Still Required
-
-Final expiration persistence verification
-
-Provider sandbox checkout
-
-Provider sandbox webhook
-
-Sandbox entitlement activation
-
-Sandbox cancellation
-
-Sandbox duplicate webhook test
-
-Full regression suite after final payment changes
-
-Final secret scan
-
-Vercel environment verification
-
-Production webhook configuration
-
-Production Stripe/Razorpay credentials
-
-Final production payment smoke test
-
+ Final expiration persistence verification
+ Provider sandbox checkout
+ Provider sandbox webhook
+ Sandbox entitlement activation
+ Sandbox cancellation
+ Sandbox duplicate webhook test
+ Full regression suite after final payment changes
+ Final secret scan
+ Vercel environment verification
+ Production webhook configuration
+ Production Stripe/Razorpay credentials
+ Final production payment smoke test
 Until all gates pass:
-
 🔴 REAL-MONEY PAYMENTS MUST REMAIN DISABLED
-
 31. Features Frozen During Release Hardening
 
 Unless explicitly approved, do not modify:
 
 ML methodology
-
 Academic holdout datasets
-
 Benchmark RMSE values
-
 Walk-forward validation
-
 Model-selection logic
-
 NIFTY scoring methodology
-
 Market-data provenance rules
-
 Production routing architecture
 
 The current priority is:
@@ -1220,7 +820,6 @@ The current priority is:
 Reliability and release verification, not uncontrolled feature expansion.
 
 32. Recommended Release Sequence
-
 CURRENT
    |
    v
@@ -1261,9 +860,7 @@ Final production smoke test
    |
    v
 LIVE PAYMENT ACTIVATION
-
 33. Leadership Assessment
-
 Core Application
 
 🟢 Substantially complete
@@ -1295,175 +892,62 @@ Real-Money Payments
 Real-money payments must remain disabled until the complete sandbox, security, webhook, persistence, and production verification gates pass.
 
 34. Definition of Done
-
-Component
-
-Status
-
-Core Platform
-
-✅
-
-Backend
-
-✅
-
-Frontend
-
-✅
-
-Institutional Dashboard
-
-✅
-
-Stock Data
-
-✅
-
-Fundamentals
-
-✅
-
-Technical Analysis
-
-✅
-
-Forecasting
-
-✅
-
-NIFTY 50 Trending
-
-✅
-
-News/Sentiment
-
-✅
-
-Watchlist
-
-✅
-
-Model Performance
-
-✅
-
-Comparison
-
-✅
-
-Settings
-
-✅
-
-Help & Support
-
-✅
-
-Pricing UI
-
-✅
-
-Payment Architecture
-
-✅
-
-Payment Security
-
-✅
-
-Supabase Schema
-
-✅
-
-Supabase Persistence
-
-✅
-
-Real Supabase Verification
-
-✅
-
-Cross-Instance Persistence
-
-✅
-
-Webhook Idempotency
-
-✅
-
-Mock/Sandbox Infrastructure
-
-✅
-
-Provider Sandbox E2E
-
-🟡
-
-Full Payment Lifecycle
-
-🟡
-
-GitHub Release Checkpoint
-
-🟡
-
-Final Vercel Deployment
-
-🟡
-
-Final Production Smoke Test
-
-🟡
-
-Production Stripe/Razorpay Configuration
-
-🔴
-
-Production Payment Smoke Test
-
-🔴
-
-Real-Money Payment Activation
-
-🔴
-
+Component	Status
+Core Platform	✅
+Backend	✅
+Frontend	✅
+Institutional Dashboard	✅
+Stock Data	✅
+Fundamentals	✅
+Technical Analysis	✅
+Forecasting	✅
+NIFTY 50 Trending	✅
+News/Sentiment	✅
+Watchlist	✅
+Model Performance	✅
+Comparison	✅
+Settings	✅
+Help & Support	✅
+Pricing UI	✅
+Payment Architecture	✅
+Payment Security	✅
+Supabase Schema	✅
+Supabase Persistence	✅
+Real Supabase Verification	✅
+Cross-Instance Persistence	✅
+Webhook Idempotency	✅
+Mock/Sandbox Infrastructure	✅
+Provider Sandbox E2E	🟡
+Full Payment Lifecycle	🟡
+GitHub Release Checkpoint	🟡
+Final Vercel Deployment	🟡
+Final Production Smoke Test	🟡
+Production Stripe/Razorpay Configuration	🔴
+Production Payment Smoke Test	🔴
+Real-Money Payment Activation	🔴
 35. Developer Commands
-
 Backend Tests
-
 python -X utf8 -m unittest discover -v -s backend/tests -p "test_*.py"
-
 Payment Persistence Tests
-
 python -X utf8 -m unittest -v backend.tests.test_payment_persistence
-
 Frontend Build
-
 cd frontend
 npm install
 npm run build
 cd ..
-
 Git Inspection
-
 git status
 git diff --check
 git diff --stat
 git log --oneline --decorate -10
-
 Git Synchronization
-
 git fetch origin
 git log --oneline --graph --decorate --all -10
 git pull --rebase origin main
 git push origin main
-
 Final Git Verification
-
 git status
 git log -1 --oneline
-
 36. Final Project Principle
 
 A subsystem is not considered production-ready merely because its code exists.
@@ -1481,19 +965,16 @@ Security Verification
 Deployment Verification
       +
 Rollback-Safe Git Checkpoint
-
 Current StockSense AI V2 Position
-
-Core Application             🟢 Substantially complete
-Frontend                     🟢 Redesigned and built
-Supabase Persistence         🟢 Real-world verified
-Payment Architecture        🟢 Implemented
-Sandbox Payment E2E          🟡 Remaining
-GitHub Release Checkpoint    🟡 Remaining
-Final Vercel Verification   🟡 Remaining
-Production Payments         🔴 Blocked
-Real-Money Activation        🔴 Not approved
-
+Core Application              🟢 Substantially complete
+Frontend                      🟢 Redesigned and built
+Supabase Persistence          🟢 Real-world verified
+Payment Architecture         🟢 Implemented
+Sandbox Payment E2E           🟡 Remaining
+GitHub Release Checkpoint     🟡 Remaining
+Final Vercel Verification    🟡 Remaining
+Production Payments          🔴 Blocked
+Real-Money Activation         🔴 Not approved
 Current Priority
 
 GitHub synchronization → Vercel verification → Sandbox payment E2E → Final security/regression audit → Production readiness review.
