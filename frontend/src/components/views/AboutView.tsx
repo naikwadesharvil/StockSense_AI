@@ -5,7 +5,7 @@ export const AboutView: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12 animate-fade-in text-slate-800 dark:text-slate-200">
       {/* Title & Introduction */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-sm space-y-4">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-3xl p-6 sm:p-10 shadow-sm space-y-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 text-xs font-mono font-semibold uppercase">
           <span>B.Tech AIML Portfolio Project</span>
         </div>
@@ -20,7 +20,7 @@ export const AboutView: React.FC = () => {
       <DisclaimerBanner />
 
       {/* 1. Project Objective */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-3">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-6 sm:p-8 shadow-sm space-y-3">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <span>1. Project Objective & Philosophy</span>
         </h2>
@@ -36,12 +36,12 @@ export const AboutView: React.FC = () => {
       </div>
 
       {/* 2. End-to-End ML Pipeline Architecture */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <span>2. End-to-End Time-Series ML Pipeline</span>
         </h2>
         
-        <div className="p-4 rounded-xl bg-slate-950 font-mono text-xs text-indigo-400 border border-slate-800 overflow-x-auto">
+        <div className="p-4 rounded-xl bg-[#0B0F17] font-mono text-xs text-indigo-400 border border-slate-200 dark:border-[#1E293B] overflow-x-auto">
           <pre className="whitespace-pre">
 {`Raw Historical Stock Data (OHLCV)
         │
@@ -81,32 +81,32 @@ Interactive Dashboard & Visualizations (Candles, Cones, Overlays, NLP Sentiment)
       </div>
 
       {/* 3. Mathematical Formulations & Evaluation Metrics */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white">
           3. Mathematical Formulations & Metrics
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
-          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1">
-            <div className="font-bold text-indigo-500">Mean Absolute Error (MAE):</div>
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#151D2F] border border-slate-200 dark:border-[#1E293B] space-y-1">
+            <div className="font-bold text-indigo-400">Mean Absolute Error (MAE):</div>
             <div className="text-slate-600 dark:text-slate-300">MAE = (1/n) Σ |y_i - ŷ_i|</div>
             <p className="font-sans text-[11px] text-slate-400">Represents average error magnitude in price units.</p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1">
-            <div className="font-bold text-indigo-500">Root Mean Squared Error (RMSE):</div>
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#151D2F] border border-slate-200 dark:border-[#1E293B] space-y-1">
+            <div className="font-bold text-indigo-400">Root Mean Squared Error (RMSE):</div>
             <div className="text-slate-600 dark:text-slate-300">RMSE = √[(1/n) Σ (y_i - ŷ_i)²]</div>
             <p className="font-sans text-[11px] text-slate-400">Heavily penalizes large outlier forecasting errors.</p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1">
-            <div className="font-bold text-indigo-500">Mean Absolute % Error (MAPE):</div>
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#151D2F] border border-slate-200 dark:border-[#1E293B] space-y-1">
+            <div className="font-bold text-indigo-400">Mean Absolute % Error (MAPE):</div>
             <div className="text-slate-600 dark:text-slate-300">MAPE = (100%/n) Σ |(y_i - ŷ_i) / y_i|</div>
             <p className="font-sans text-[11px] text-slate-400">Scale-independent relative percentage precision.</p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-1">
-            <div className="font-bold text-indigo-500">Directional Accuracy (Hit Rate):</div>
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#151D2F] border border-slate-200 dark:border-[#1E293B] space-y-1">
+            <div className="font-bold text-indigo-400">Directional Accuracy (Hit Rate):</div>
             <div className="text-slate-600 dark:text-slate-300">Hit% = (1/n) Σ I(sign(Δy) == sign(Δŷ))</div>
             <p className="font-sans text-[11px] text-slate-400">Frequency of correctly predicting the sign of the next move.</p>
           </div>
@@ -114,7 +114,7 @@ Interactive Dashboard & Visualizations (Candles, Cones, Overlays, NLP Sentiment)
       </div>
 
       {/* 4. Limitations & Real-World Realities */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-3">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-6 sm:p-8 shadow-sm space-y-3">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white">
           4. Scientific Limitations
         </h2>
@@ -129,7 +129,7 @@ Interactive Dashboard & Visualizations (Candles, Cones, Overlays, NLP Sentiment)
       </div>
 
       {/* 5. Future Roadmap & Research Additions */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white">
           5. Future Research Roadmap
         </h2>
@@ -142,7 +142,7 @@ Interactive Dashboard & Visualizations (Candles, Cones, Overlays, NLP Sentiment)
             { title: 'Markowitz Mean-Variance Optimization', desc: 'Automated efficient frontier computation and asset weight allocation.' },
             { title: 'Real-Time WebSocket Ingestion', desc: 'Sub-second tick-level streaming data feeds with Kafka & FastAPI WebSockets.' }
           ].map((item, idx) => (
-            <div key={idx} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60">
+            <div key={idx} className="p-3 rounded-xl bg-slate-50 dark:bg-[#151D2F] border border-slate-200 dark:border-[#1E293B]">
               <div className="font-semibold text-slate-900 dark:text-white">{item.title}</div>
               <div className="text-slate-500 dark:text-slate-400 mt-0.5 text-[11px]">{item.desc}</div>
             </div>

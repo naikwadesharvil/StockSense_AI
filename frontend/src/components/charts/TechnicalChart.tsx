@@ -83,9 +83,9 @@ export const TechnicalChart: React.FC<TechnicalChartProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm">
+    <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-4 sm:p-6 shadow-sm">
       {/* Top Toggle Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-slate-100 dark:border-slate-800">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-slate-100 dark:border-[#1E293B]">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider mr-1">Overlays:</span>
           
@@ -109,19 +109,19 @@ export const TechnicalChart: React.FC<TechnicalChartProps> = ({
             <span>EMA 20</span>
           </label>
 
-          <label className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-xs font-medium cursor-pointer">
-            <input type="checkbox" checked={showBB} onChange={e => setShowBB(e.target.checked)} className="rounded text-indigo-500" />
+          <label className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-medium cursor-pointer">
+            <input type="checkbox" checked={showBB} onChange={e => setShowBB(e.target.checked)} className="rounded text-emerald-500" />
             <span>Bollinger Bands (20, 2σ)</span>
           </label>
         </div>
 
         {/* Sub-chart toggle */}
-        <div className="flex bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700/60">
+        <div className="flex bg-slate-100 dark:bg-[#0B0F17] p-0.5 rounded-lg border border-slate-200 dark:border-[#1E293B]">
           <button
             onClick={() => setActiveSubChart('rsi')}
             className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
               activeSubChart === 'rsi'
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-emerald-600 text-white shadow-sm'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -131,7 +131,7 @@ export const TechnicalChart: React.FC<TechnicalChartProps> = ({
             onClick={() => setActiveSubChart('macd')}
             className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
               activeSubChart === 'macd'
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-emerald-600 text-white shadow-sm'
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -340,7 +340,7 @@ export const TechnicalChart: React.FC<TechnicalChartProps> = ({
       </div>
 
       {/* Educational Footer Legend */}
-      <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs flex flex-wrap items-center justify-between gap-3 text-slate-500 dark:text-slate-400">
+      <div className="mt-3 pt-3 border-t border-slate-100 dark:border-[#1E293B] text-xs flex flex-wrap items-center justify-between gap-3 text-slate-500 dark:text-slate-400">
         <div className="flex items-center gap-4">
           <span className="font-medium text-slate-700 dark:text-slate-300">Active Reading:</span>
           <span>Close: <strong className="font-mono text-slate-900 dark:text-white">{currencySymbol}{hovered?.close}</strong></span>

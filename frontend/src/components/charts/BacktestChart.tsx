@@ -17,7 +17,7 @@ export const BacktestChart: React.FC<BacktestChartProps> = ({
 
   if (!data || data.length === 0) {
     return (
-      <div className="h-72 flex items-center justify-center text-slate-400 bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800">
+      <div className="h-72 flex items-center justify-center text-slate-400 bg-slate-50 dark:bg-[#111726] rounded-xl border border-slate-200 dark:border-[#1E293B]">
         No out-of-sample backtest data available.
       </div>
     );
@@ -74,13 +74,13 @@ export const BacktestChart: React.FC<BacktestChartProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm">
+    <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-4 sm:p-6 shadow-sm">
       {/* Header Info */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-[#1E293B]">
         <div>
           <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
             <span>Out-of-Sample Backtest Tracking</span>
-            <span className="text-xs font-mono font-normal px-2 py-0.5 bg-indigo-500/10 text-indigo-500 rounded border border-indigo-500/20">
+            <span className="text-xs font-mono font-normal px-2 py-0.5 bg-indigo-500/10 text-indigo-400 rounded border border-indigo-500/20">
               {data.length} Test Sessions
             </span>
           </h3>
@@ -99,11 +99,11 @@ export const BacktestChart: React.FC<BacktestChartProps> = ({
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-pink-500" />
             <span className="text-slate-400">Model Pred:</span>
-            <span className="font-bold text-pink-500">{currencySymbol}{hovered?.predicted}</span>
+            <span className="font-bold text-pink-400">{currencySymbol}{hovered?.predicted}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="text-slate-400">Error:</span>
-            <span className={`font-bold ${hovered?.error >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+            <span className={`font-bold ${hovered?.error >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
               {hovered?.error >= 0 ? '+' : ''}{hovered?.error} ({hovered?.abs_error_pct}%)
             </span>
           </div>
@@ -125,7 +125,7 @@ export const BacktestChart: React.FC<BacktestChartProps> = ({
             const y = getMainY(val);
             return (
               <g key={`backtest-grid-${i}`}>
-                <line x1={paddingLeft} y1={y} x2={width - paddingRight} y2={y} stroke="currentColor" className="text-slate-200 dark:text-slate-800" strokeDasharray="3 3" />
+                <line x1={paddingLeft} y1={y} x2={width - paddingRight} y2={y} stroke="currentColor" className="text-slate-200 dark:text-[#1E293B]" strokeDasharray="3 3" />
                 <text x={paddingLeft - 8} y={y + 4} textAnchor="end" className="fill-slate-400 font-mono text-[10px]">{currencySymbol}{val.toFixed(1)}</text>
               </g>
             );
@@ -151,7 +151,7 @@ export const BacktestChart: React.FC<BacktestChartProps> = ({
           />
 
           {/* Divider between Main and Error Bar Panel */}
-          <line x1={paddingLeft} y1={height - paddingBottom - errorPanelHeight} x2={width - paddingRight} y2={height - paddingBottom - errorPanelHeight} stroke="currentColor" className="text-slate-200 dark:text-slate-800" />
+          <line x1={paddingLeft} y1={height - paddingBottom - errorPanelHeight} x2={width - paddingRight} y2={height - paddingBottom - errorPanelHeight} stroke="currentColor" className="text-slate-200 dark:text-[#1E293B]" />
           
           {/* Error Zero Line */}
           <line x1={paddingLeft} y1={height - paddingBottom - errorPanelHeight / 2} x2={width - paddingRight} y2={height - paddingBottom - errorPanelHeight / 2} stroke="currentColor" className="text-slate-300 dark:text-slate-700" strokeDasharray="2 2" />

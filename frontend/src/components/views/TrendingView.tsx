@@ -69,7 +69,7 @@ export const TrendingView: React.FC = () => {
   return (
     <div className="space-y-6 pb-16 animate-fade-in max-w-7xl mx-auto">
       {/* Header Banner */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="space-y-2 max-w-2xl">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 text-xs font-bold uppercase tracking-wider">
@@ -106,7 +106,7 @@ export const TrendingView: React.FC = () => {
         <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={() => setShowMethodologyModal(true)}
-            className="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold border border-slate-200 dark:border-slate-700 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#151D2F] hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold border border-slate-200 dark:border-[#1E293B] transition-colors flex items-center gap-1.5"
           >
             <svg className="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -117,7 +117,7 @@ export const TrendingView: React.FC = () => {
           <button
             onClick={() => fetchTrendingData(true)}
             disabled={isRefreshing}
-            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/20 transition-all flex items-center gap-1.5 disabled:opacity-50"
+            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-md shadow-emerald-600/20 transition-all flex items-center gap-1.5 disabled:opacity-50"
           >
             <svg className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -129,11 +129,11 @@ export const TrendingView: React.FC = () => {
 
       {/* Market Breadth & Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] shadow-sm">
           <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
             Total Evaluated
           </div>
-          <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1 font-mono">
             {data?.total_stocks_evaluated || 50}
           </div>
           <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
@@ -141,11 +141,11 @@ export const TrendingView: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] shadow-sm">
           <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-500">
             Advancing (Gainers)
           </div>
-          <div className="text-2xl font-extrabold text-emerald-500 mt-1 flex items-baseline gap-1">
+          <div className="text-2xl font-extrabold text-emerald-500 mt-1 flex items-baseline gap-1 font-mono">
             <span>{data?.top_gainers_count || 0}</span>
             <span className="text-xs text-slate-400 font-normal">
               ({(((data?.top_gainers_count || 0) / (data?.total_stocks_evaluated || 50)) * 100).toFixed(0)}%)
@@ -156,11 +156,11 @@ export const TrendingView: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] shadow-sm">
           <div className="text-[11px] font-semibold uppercase tracking-wider text-rose-500">
             Declining (Losers)
           </div>
-          <div className="text-2xl font-extrabold text-rose-500 mt-1 flex items-baseline gap-1">
+          <div className="text-2xl font-extrabold text-rose-500 mt-1 flex items-baseline gap-1 font-mono">
             <span>{data?.top_losers_count || 0}</span>
             <span className="text-xs text-slate-400 font-normal">
               ({(((data?.top_losers_count || 0) / (data?.total_stocks_evaluated || 50)) * 100).toFixed(0)}%)
@@ -171,11 +171,11 @@ export const TrendingView: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] shadow-sm">
           <div className="text-[11px] font-semibold uppercase tracking-wider text-indigo-500">
             Avg Relative Vol (RVOL)
           </div>
-          <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1 font-mono">
             {(stocks.reduce((acc, s) => acc + s.relative_volume, 0) / Math.max(stocks.length, 1)).toFixed(2)}x
           </div>
           <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
@@ -203,7 +203,7 @@ export const TrendingView: React.FC = () => {
                 <div
                   key={stk.symbol}
                   onClick={() => selectStockAndNavigate(stk.symbol, 'dashboard')}
-                  className={`p-5 rounded-2xl bg-white dark:bg-slate-900 border-2 ${borderColors[idx]} shadow-sm hover:shadow-md cursor-pointer transition-all hover:scale-[1.01] flex flex-col justify-between group`}
+                  className={`p-5 rounded-2xl bg-white dark:bg-[#111726] border-2 ${borderColors[idx]} shadow-sm hover:shadow-md cursor-pointer transition-all hover:scale-[1.01] flex flex-col justify-between group`}
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-2">
@@ -217,7 +217,7 @@ export const TrendingView: React.FC = () => {
 
                     <div className="flex items-baseline justify-between gap-2">
                       <div>
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-500 transition-colors">
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-400 transition-colors">
                           {stk.symbol}
                         </h3>
                         <p className="text-xs text-slate-500 truncate max-w-[180px]">
@@ -230,7 +230,7 @@ export const TrendingView: React.FC = () => {
                         </div>
                         <div
                           className={`text-xs font-semibold font-mono ${
-                            stk.daily_change_percentage >= 0 ? 'text-emerald-500' : 'text-rose-500'
+                            stk.daily_change_percentage >= 0 ? 'text-emerald-400' : 'text-rose-400'
                           }`}
                         >
                           {stk.daily_change_percentage >= 0 ? '+' : ''}
@@ -240,7 +240,7 @@ export const TrendingView: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500">
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-[#1E293B] flex items-center justify-between text-xs text-slate-500">
                     <span className="truncate">{stk.sector}</span>
                     <span className="font-mono font-medium">RVOL: {stk.relative_volume}x</span>
                   </div>
@@ -254,12 +254,12 @@ export const TrendingView: React.FC = () => {
       {/* Filter Tabs & Search Controls */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-2">
         {/* Filter Tabs */}
-        <div className="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700/80 overflow-x-auto text-xs font-semibold">
+        <div className="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-[#0B0F17] rounded-2xl border border-slate-200 dark:border-[#1E293B] overflow-x-auto text-xs font-semibold">
           <button
             onClick={() => setFilterTab('all')}
             className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
               filterTab === 'all'
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-emerald-600 text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -292,7 +292,7 @@ export const TrendingView: React.FC = () => {
             onClick={() => setFilterTab('volume')}
             className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
               filterTab === 'volume'
-                ? 'bg-blue-600 text-white shadow-sm'
+                ? 'bg-indigo-600 text-white shadow-sm'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -318,7 +318,7 @@ export const TrendingView: React.FC = () => {
             placeholder="Search NIFTY 50..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-white placeholder-slate-400"
+            className="w-full pl-9 pr-4 py-2 text-xs bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-900 dark:text-white placeholder-slate-400"
           />
           <svg className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -327,10 +327,10 @@ export const TrendingView: React.FC = () => {
       </div>
 
       {/* Main Ranked Table */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-3xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+            <thead className="bg-slate-50 dark:bg-[#0B0F17] border-b border-slate-200 dark:border-[#1E293B] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
               <tr>
                 <th className="py-3.5 px-4 text-center w-12">#</th>
                 <th className="py-3.5 px-4">Security</th>
@@ -494,11 +494,11 @@ export const TrendingView: React.FC = () => {
 
       {/* Methodology Modal */}
       {showMethodologyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl space-y-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl space-y-5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
@@ -522,26 +522,26 @@ export const TrendingView: React.FC = () => {
                 The StockSense AI NIFTY 50 trend score is a mathematically bounded (0 to 100) deterministic multi-factor model designed to highlight securities exhibiting statistically elevated activity:
               </p>
 
-              <div className="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-mono text-[11px] text-indigo-600 dark:text-indigo-400 border border-slate-200 dark:border-slate-700">
+              <div className="p-3.5 rounded-xl bg-slate-100 dark:bg-[#0B0F17] font-mono text-[11px] text-emerald-600 dark:text-emerald-400 border border-slate-200 dark:border-[#1E293B]">
                 TrendScore = min(100, 0.40 × ReturnScore + 0.35 × VolumeScore + 0.25 × VolatilityScore)
               </div>
 
               <div className="space-y-2 pt-1">
                 <div className="flex items-start gap-2">
-                  <strong className="text-indigo-500 w-28 shrink-0">1. Return Score:</strong>
+                  <strong className="text-emerald-400 w-28 shrink-0">1. Return Score:</strong>
                   <span>Scaled magnitude of absolute percentage price movement relative to previous close. Weight: <strong>40%</strong>.</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <strong className="text-indigo-500 w-28 shrink-0">2. Volume Score:</strong>
+                  <strong className="text-emerald-400 w-28 shrink-0">2. Volume Score:</strong>
                   <span>Current trading volume normalized against the 30-day baseline average (Relative Volume RVOL). Weight: <strong>35%</strong>.</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <strong className="text-indigo-500 w-28 shrink-0">3. Volatility Score:</strong>
+                  <strong className="text-emerald-400 w-28 shrink-0">3. Volatility Score:</strong>
                   <span>Intraday high-low range normalized to anchor price. Weight: <strong>25%</strong>.</span>
                 </div>
               </div>
 
-              <p className="text-[11px] text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <p className="text-[11px] text-slate-400 pt-2 border-t border-slate-100 dark:border-[#1E293B]">
                 <strong>Data Provenance Notice:</strong> Quotes are sourced from verified market data channels with caching buffers. Historical closes are clearly distinguished from live open sessions.
               </p>
             </div>
@@ -549,7 +549,7 @@ export const TrendingView: React.FC = () => {
             <div className="pt-2">
               <button
                 onClick={() => setShowMethodologyModal(false)}
-                className="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-500 transition-colors"
+                className="w-full py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors shadow-sm shadow-emerald-600/20"
               >
                 Close Explanation
               </button>

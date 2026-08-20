@@ -25,13 +25,13 @@ export const ModelPerformanceView: React.FC = () => {
   return (
     <div className="space-y-6 pb-12 animate-fade-in">
       {/* Top Header */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">
               Model Performance & Out-of-Sample Backtesting
             </h1>
-            <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-500 border border-indigo-500/20">
+            <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               {overview.symbol}
             </span>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 font-semibold">
@@ -43,7 +43,7 @@ export const ModelPerformanceView: React.FC = () => {
           </p>
         </div>
 
-        <div className="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div className="text-xs font-mono text-slate-400 bg-slate-100 dark:bg-[#0B0F17] px-3 py-2 rounded-xl border border-slate-200 dark:border-[#1E293B]">
           <div>Train Partition: {metrics.train_samples} days (thru {metrics.training_period_end})</div>
           <div>Holdout Test: {metrics.test_samples} days ({metrics.testing_period_start} to {metrics.testing_period_end})</div>
         </div>
@@ -103,8 +103,8 @@ export const ModelPerformanceView: React.FC = () => {
       {/* Feature Importance & Model Weights */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Feature Importance Bar Chart */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
-          <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+        <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm">
+          <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-[#1E293B]">
             <div>
               <h3 className="font-bold text-base text-slate-900 dark:text-white">
                 Engineered Feature Importance
@@ -113,7 +113,7 @@ export const ModelPerformanceView: React.FC = () => {
                 Normalized relative feature weights in the L2 regularized regression model.
               </p>
             </div>
-            <span className="text-xs font-mono text-indigo-500 bg-indigo-500/10 px-2 py-0.5 rounded">
+            <span className="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
               L2 Ridge α=10.0
             </span>
           </div>
@@ -129,9 +129,9 @@ export const ModelPerformanceView: React.FC = () => {
                     {item.importance_pct}%
                   </span>
                 </div>
-                <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-100 dark:bg-[#0B0F17] h-2 rounded-full overflow-hidden border border-transparent dark:border-[#1E293B]">
                   <div
-                    className="bg-indigo-600 dark:bg-indigo-500 h-full rounded-full transition-all duration-500"
+                    className="bg-emerald-500 h-full rounded-full transition-all duration-500"
                     style={{ width: `${Math.min(100, item.importance_pct * 3)}%` }}
                   />
                 </div>
@@ -144,7 +144,7 @@ export const ModelPerformanceView: React.FC = () => {
         </div>
 
         {/* Statistical Formulations & Methodology Card */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-4">
+        <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-4">
           <div>
             <h3 className="font-bold text-base text-slate-900 dark:text-white mb-2">
               Time-Series Evaluation Methodology
@@ -154,18 +154,18 @@ export const ModelPerformanceView: React.FC = () => {
             </p>
 
             <div className="space-y-2.5 text-xs font-mono">
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
-                <div className="font-bold text-indigo-500 mb-0.5">Mean Absolute Error (MAE):</div>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#151D2F] border border-slate-200 dark:border-[#1E293B]">
+                <div className="font-bold text-emerald-400 mb-0.5">Mean Absolute Error (MAE):</div>
                 <div className="text-slate-600 dark:text-slate-300">MAE = (1/n) * Σ |y_i - ŷ_i| = {currSym}{metrics.mae}</div>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
-                <div className="font-bold text-indigo-500 mb-0.5">Root Mean Squared Error (RMSE):</div>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#151D2F] border border-slate-200 dark:border-[#1E293B]">
+                <div className="font-bold text-emerald-400 mb-0.5">Root Mean Squared Error (RMSE):</div>
                 <div className="text-slate-600 dark:text-slate-300">RMSE = √[(1/n) * Σ (y_i - ŷ_i)²] = {currSym}{metrics.rmse}</div>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
-                <div className="font-bold text-indigo-500 mb-0.5">Directional Accuracy (Hit Rate):</div>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#151D2F] border border-slate-200 dark:border-[#1E293B]">
+                <div className="font-bold text-emerald-400 mb-0.5">Directional Accuracy (Hit Rate):</div>
                 <div className="text-slate-600 dark:text-slate-300">Hit% = (1/n) * Σ I(sign(Δy) == sign(Δŷ)) = {metrics.directional_accuracy_pct}%</div>
               </div>
             </div>

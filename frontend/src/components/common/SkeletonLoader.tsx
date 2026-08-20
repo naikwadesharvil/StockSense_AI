@@ -9,7 +9,7 @@ export const SkeletonLoader: React.FC<{ count?: number; className?: string }> = 
       {Array.from({ length: count }).map((_, i) => (
         <div 
           key={i} 
-          className={`animate-pulse bg-slate-200 dark:bg-slate-800/80 rounded-xl ${className}`} 
+          className={`animate-pulse bg-slate-200 dark:bg-[#111726] border border-transparent dark:border-[#1E293B] rounded-xl ${className}`} 
         />
       ))}
     </div>

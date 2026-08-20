@@ -21,7 +21,27 @@ export type AppView =
   | 'sentiment'
   | 'pricing'
   | 'about'
-  | 'trending';
+  | 'trending'
+  | 'markets'
+  | 'portfolio'
+  | 'screener'
+  | 'alerts'
+  | 'reports'
+  | 'settings'
+  | 'help';
+
+export interface MarketTickerItem {
+  id: string;
+  name: string;
+  symbol: string;
+  value: number;
+  change: number;
+  change_pct: number;
+  sparkline: number[];
+  currency_symbol: string;
+  is_live: boolean;
+  provenance_note: string;
+}
 
 export interface DataProvenance {
   source: string;

@@ -39,8 +39,8 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   return (
     <div className={`p-4 rounded-xl border transition-all duration-200 ${
       highlight 
-        ? 'bg-gradient-to-br from-indigo-500/10 via-slate-900/50 to-slate-900 border-indigo-500/40 shadow-lg shadow-indigo-500/5' 
-        : 'bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700'
+        ? 'bg-gradient-to-br from-indigo-500/10 via-[#111726] to-[#111726] border-indigo-500/40 shadow-lg shadow-indigo-500/5' 
+        : 'bg-white dark:bg-[#111726] border-slate-200 dark:border-[#1E293B] hover:border-slate-300 dark:hover:border-slate-700'
     }`}>
       <div className="flex items-center justify-between gap-2 mb-2">
         <span className="text-xs font-medium text-slate-500 dark:text-slate-400 tracking-wider uppercase flex items-center gap-1.5" title={tooltip}>

@@ -131,7 +131,7 @@ export const LandingView: React.FC = () => {
       <DisclaimerBanner />
 
       {/* Architecture & Pipeline Showcase */}
-      <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <section className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-6 sm:p-8 shadow-sm">
         <div className="max-w-3xl mb-6">
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
             End-to-End Time-Series Machine Learning Pipeline
@@ -153,9 +153,9 @@ export const LandingView: React.FC = () => {
             { step: '07', title: 'Uncertainty', desc: 'Residual RMSE' },
             { step: '08', title: 'Forecast Cone', desc: '1d to 30d visual' }
           ].map((item, idx) => (
-            <div key={idx} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex flex-col justify-between">
+            <div key={idx} className="p-3 rounded-xl bg-slate-50 dark:bg-[#151D2F] border border-slate-200 dark:border-[#1E293B] flex flex-col justify-between">
               <div>
-                <span className="font-mono font-bold text-indigo-500 text-[10px] block mb-1">STEP {item.step}</span>
+                <span className="font-mono font-bold text-indigo-400 text-[10px] block mb-1">STEP {item.step}</span>
                 <span className="font-semibold text-slate-800 dark:text-slate-200 block">{item.title}</span>
               </div>
               <span className="text-[10px] text-slate-400 mt-2">{item.desc}</span>
@@ -173,7 +173,7 @@ export const LandingView: React.FC = () => {
           {features.map((f, i) => (
             <div
               key={i}
-              className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-sm"
+              className="p-6 rounded-2xl bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] hover:border-emerald-500/40 dark:hover:border-emerald-500/40 transition-all shadow-sm"
             >
               <div className="text-3xl mb-3">{f.icon}</div>
               <h3 className="font-bold text-base text-slate-900 dark:text-white mb-2">{f.title}</h3>
@@ -184,9 +184,9 @@ export const LandingView: React.FC = () => {
       </section>
 
       {/* Featured NIFTY 50 Trending Banner */}
-      <section className="bg-gradient-to-r from-slate-900 via-indigo-950/60 to-slate-900 border border-indigo-500/30 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+      <section className="bg-gradient-to-r from-[#0B0F17] via-[#111726] to-[#0B0F17] border border-emerald-500/30 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-2 max-w-xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold uppercase tracking-wider">
             <span>⚡ Multi-Factor Volumetric Trend Score</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-extrabold text-white">
@@ -199,7 +199,7 @@ export const LandingView: React.FC = () => {
 
         <button
           onClick={() => setCurrentView('trending')}
-          className="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-indigo-600/30 transition-all whitespace-nowrap flex items-center gap-2 shrink-0"
+          className="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/30 transition-all whitespace-nowrap flex items-center gap-2 shrink-0"
         >
           <span>Open NIFTY Trending Radar</span>
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -209,7 +209,7 @@ export const LandingView: React.FC = () => {
       </section>
 
       {/* Quick Launch Equities Picker */}
-      <section className="bg-gradient-to-r from-indigo-900/20 via-purple-900/20 to-slate-900 border border-indigo-500/20 rounded-2xl p-6 sm:p-8">
+      <section className="bg-gradient-to-r from-[#111726] via-[#151D2F] to-[#111726] border border-[#1E293B] rounded-2xl p-6 sm:p-8">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
           Select an Equity to Launch Forecast Workbench
         </h3>
@@ -222,9 +222,9 @@ export const LandingView: React.FC = () => {
             <button
               key={stk.symbol}
               onClick={() => selectStockAndNavigate(stk.symbol, 'dashboard')}
-              className="p-3.5 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-indigo-500/10 dark:hover:bg-indigo-900/30 border border-slate-200 dark:border-slate-700 hover:border-indigo-500 text-left transition-all group"
+              className="p-3.5 rounded-xl bg-white dark:bg-[#0B0F17] hover:bg-emerald-500/10 dark:hover:bg-emerald-950/30 border border-slate-200 dark:border-[#1E293B] hover:border-emerald-500 text-left transition-all group"
             >
-              <div className="font-mono font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-500">
+              <div className="font-mono font-bold text-sm text-slate-900 dark:text-white group-hover:text-emerald-400">
                 {stk.symbol}
               </div>
               <div className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">

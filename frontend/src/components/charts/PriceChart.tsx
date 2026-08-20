@@ -19,7 +19,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
 
   if (!data || data.length === 0) {
     return (
-      <div className="h-96 flex items-center justify-center text-slate-400 bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800">
+      <div className="h-96 flex items-center justify-center text-slate-400 bg-slate-50 dark:bg-[#111726] rounded-xl border border-slate-200 dark:border-[#1E293B]">
         Loading historical price chart...
       </div>
     );
@@ -99,9 +99,9 @@ export const PriceChart: React.FC<PriceChartProps> = ({
   ];
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm">
+    <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-4 sm:p-6 shadow-sm">
       {/* Chart Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100 dark:border-[#1E293B]">
         <div>
           <div className="flex items-center gap-2">
             <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">

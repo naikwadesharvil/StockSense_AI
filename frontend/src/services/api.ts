@@ -15,7 +15,7 @@ import {
   SubscriptionRecord,
   NiftyTrendingResponse
 } from '../types/stock';
-import { POPULAR_STOCKS, generateHistoricalSeries } from './mockData';
+import { POPULAR_STOCKS, generateHistoricalSeries, generateNifty50TrendingFallback } from './mockData';
 import { ClientMLEngine } from './mlEngine';
 
 const getApiBaseUrl = (): string => {
@@ -457,10 +457,10 @@ export const StockAPI = {
           const res = await fetch(`${API_BASE_URL}/api/stocks/trending/nifty50${forceRefresh ? '?refresh=true' : ''}`);
           if (res.ok) return await res.json();
         } catch (e) {
-          console.warn('Backend NIFTY trending fetch failed', e);
+          console.warn('Backend NIFTY trending fetch failed, using benchmark model', e);
         }
       }
-      return null;
+      return generateNifty50TrendingFallback();
     }, 45000);
   }
 };

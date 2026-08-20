@@ -18,7 +18,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
 
   if (!series || series.length === 0 || symbols.length === 0) {
     return (
-      <div className="h-80 flex items-center justify-center text-slate-400 bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800">
+      <div className="h-80 flex items-center justify-center text-slate-400 bg-slate-50 dark:bg-[#111726] rounded-xl border border-slate-200 dark:border-[#1E293B]">
         Loading normalized comparison series...
       </div>
     );
@@ -70,9 +70,9 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm">
+    <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-4 sm:p-6 shadow-sm">
       {/* Header Legend */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100 dark:border-[#1E293B]">
         <div>
           <h3 className="font-bold text-base text-slate-900 dark:text-white">
             Normalized Performance (% Return from Common Base)
@@ -87,10 +87,10 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
           {symbols.map((sym, i) => {
             const ret = hovered ? hovered[`${sym}_return_pct`] : 0;
             return (
-              <div key={sym} className="flex items-center gap-1.5 px-2 py-1 rounded bg-slate-100 dark:bg-slate-800">
+              <div key={sym} className="flex items-center gap-1.5 px-2 py-1 rounded bg-slate-100 dark:bg-[#0B0F17] border border-transparent dark:border-[#1E293B]">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLOR_PALETTE[i % COLOR_PALETTE.length] }} />
                 <span className="font-semibold">{sym}:</span>
-                <span className={ret >= 0 ? 'text-emerald-500 font-bold' : 'text-rose-500 font-bold'}>
+                <span className={ret >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
                   {ret >= 0 ? '+' : ''}{ret?.toFixed(2)}%
                 </span>
               </div>
@@ -114,7 +114,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
             const y = getY(val);
             return (
               <g key={`comp-grid-${i}`}>
-                <line x1={paddingLeft} y1={y} x2={width - paddingRight} y2={y} stroke="currentColor" className="text-slate-200 dark:text-slate-800" strokeDasharray="3 3" />
+                <line x1={paddingLeft} y1={y} x2={width - paddingRight} y2={y} stroke="currentColor" className="text-slate-200 dark:text-[#1E293B]" strokeDasharray="3 3" />
                 <text x={paddingLeft - 8} y={y + 4} textAnchor="end" className="fill-slate-400 font-mono text-[10px]">
                   {val >= 0 ? '+' : ''}{val.toFixed(1)}%
                 </text>

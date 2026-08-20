@@ -76,13 +76,13 @@ export const TechnicalView: React.FC = () => {
   return (
     <div className="space-y-6 pb-12 animate-fade-in">
       {/* Header */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">
               Quantitative Technical Indicators & Oscillators
             </h1>
-            <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-500 border border-indigo-500/20">
+            <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               {overview.symbol}
             </span>
             <ProvenanceBadge provenance={overview.provenance} lastUpdated={overview.last_updated} />
@@ -154,8 +154,8 @@ export const TechnicalView: React.FC = () => {
       />
 
       {/* Educational Indicator Glossary & Mathematical Documentation */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-6 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-[#1E293B]">
           <div>
             <h3 className="font-bold text-lg text-slate-900 dark:text-white">
               Educational Indicator Interpretations & Mathematical Formulas
@@ -173,13 +173,13 @@ export const TechnicalView: React.FC = () => {
               onClick={() => setSelectedGlossary(selectedGlossary === item.id ? null : item.id)}
               className={`p-4 rounded-xl border transition-all cursor-pointer ${
                 selectedGlossary === item.id
-                  ? 'bg-indigo-500/10 border-indigo-500 shadow-md'
-                  : 'bg-slate-50/70 dark:bg-slate-800/40 border-slate-200 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600'
+                  ? 'bg-emerald-500/10 border-emerald-500/40 shadow-md'
+                  : 'bg-slate-50/70 dark:bg-[#151D2F] border-slate-200 dark:border-[#1E293B] hover:border-slate-300 dark:hover:border-slate-600'
               }`}
             >
               <div className="flex items-center justify-between gap-2 mb-1.5">
                 <span className="font-bold text-sm text-slate-900 dark:text-white">{item.name}</span>
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
                   {item.id.toUpperCase()}
                 </span>
               </div>
@@ -192,7 +192,7 @@ export const TechnicalView: React.FC = () => {
                 {item.description}
               </p>
 
-              <div className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+              <div className="p-2 rounded-lg bg-white dark:bg-[#0B0F17] border border-slate-200 dark:border-[#1E293B] text-[11px] font-mono text-slate-500 dark:text-slate-400">
                 <div className="text-[10px] uppercase font-bold text-slate-400 mb-0.5">Formula:</div>
                 <div className="text-slate-700 dark:text-slate-300">{item.formula}</div>
               </div>

@@ -3,26 +3,96 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --terminal-bg: #0b0f17;
+    --terminal-panel: #111726;
+    --terminal-panel-hover: #151d2f;
+    --terminal-border: #1e293b;
+    --terminal-accent: #10b981;
+    --terminal-accent-glow: rgba(16, 185, 129, 0.15);
+    --terminal-negative: #f43f5e;
+  }
+
   body {
     @apply antialiased;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+    font-variant-numeric: tabular-nums;
   }
 }
 
+/* Custom Financial Terminal Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.6);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.8);
+}
+
+/* Hide scrollbar for clean ticker strips while preserving scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Micro-animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.95); }
+}
+
 .animate-fade-in {
-  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-slide-up {
-  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Terminal Glass & Card Utilities */
+.terminal-card {
+  @apply bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1e293b] rounded-2xl shadow-sm transition-all duration-150;
+}
+
+.terminal-card-hover {
+  @apply hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md;
+}
+
+.terminal-accent-glow {
+  box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.2);
 }

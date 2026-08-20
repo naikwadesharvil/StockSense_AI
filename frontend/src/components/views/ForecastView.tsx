@@ -34,16 +34,16 @@ export const ForecastView: React.FC = () => {
   return (
     <div className="space-y-6 pb-12 animate-fade-in">
       {/* Top Header & Horizon Switcher */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">
               AI Time-Series Stock Forecasting
             </h1>
-            <span className="font-mono text-xs px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-500 font-bold border border-indigo-500/20">
+            <span className="font-mono text-xs px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 font-bold border border-indigo-500/20">
               {overview.symbol}
             </span>
-            <span className="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono">
+            <span className="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800/80 text-slate-400 font-mono">
               Model: Ridge L2 Baseline
             </span>
           </div>
@@ -53,14 +53,14 @@ export const ForecastView: React.FC = () => {
         </div>
 
         {/* Horizon Tabs */}
-        <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700/60 self-start md:self-auto">
+        <div className="flex bg-slate-100 dark:bg-[#0B0F17] p-1 rounded-xl border border-slate-200 dark:border-[#1E293B] self-start md:self-auto">
           {(['1d', '5d', '10d', '30d'] as ForecastHorizon[]).map(h => (
             <button
               key={h}
               onClick={() => setForecastHorizon(h)}
               className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
                 forecastHorizon === h
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
+                  ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -117,8 +117,8 @@ export const ForecastView: React.FC = () => {
       />
 
       {/* Trajectory Breakdown Table */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm overflow-hidden">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-[#1E293B]">
           <div>
             <h3 className="font-bold text-base text-slate-900 dark:text-white">
               Daily Projected Trajectory & Uncertainty Table
@@ -135,7 +135,7 @@ export const ForecastView: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/50 text-slate-400 font-sans uppercase tracking-wider text-[10px]">
+              <tr className="bg-slate-50 dark:bg-[#0B0F17] text-slate-400 font-sans uppercase tracking-wider text-[10px]">
                 <th className="p-3">Step</th>
                 <th className="p-3">Target Date</th>
                 <th className="p-3">Predicted Price</th>
@@ -145,18 +145,18 @@ export const ForecastView: React.FC = () => {
                 <th className="p-3">Uncertainty Spread</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/50 text-slate-700 dark:text-slate-300">
+            <tbody className="divide-y divide-slate-100 dark:divide-[#1E293B] text-slate-700 dark:text-slate-300">
               {trajectory.slice(0, forecastHorizon === '1d' ? 1 : forecastHorizon === '5d' ? 5 : forecastHorizon === '10d' ? 10 : 30).map((row, idx) => (
                 <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-indigo-500">+{row.step}d</td>
+                  <td className="p-3 font-bold text-emerald-400">+{row.step}d</td>
                   <td className="p-3">{row.date}</td>
                   <td className="p-3 font-bold text-slate-900 dark:text-white">{currSym}{row.predicted_price.toFixed(2)}</td>
-                  <td className={`p-3 font-semibold ${row.expected_change_pct >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                  <td className={`p-3 font-semibold ${row.expected_change_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                     {row.expected_change_pct >= 0 ? '+' : ''}{row.expected_change_pct.toFixed(2)}%
                   </td>
                   <td className="p-3 text-purple-400">{currSym}{row.ci_80_lower} – {currSym}{row.ci_80_upper}</td>
                   <td className="p-3 text-pink-400">{currSym}{row.ci_95_lower} – {currSym}{row.ci_95_upper}</td>
-                  <td className="p-3 text-slate-500">±{currSym}{((row.ci_95_upper - row.predicted_price)).toFixed(2)}</td>
+                  <td className="p-3 text-slate-400">±{currSym}{((row.ci_95_upper - row.predicted_price)).toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>

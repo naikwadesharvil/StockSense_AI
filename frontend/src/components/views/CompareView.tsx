@@ -53,7 +53,7 @@ export const CompareView: React.FC = () => {
   return (
     <div className="space-y-6 pb-12 animate-fade-in">
       {/* Header & Controls */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">
             Multi-Stock Performance & Risk Comparison
@@ -64,14 +64,14 @@ export const CompareView: React.FC = () => {
         </div>
 
         {/* Timeframe Switcher */}
-        <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700/60">
+        <div className="flex bg-slate-100 dark:bg-[#0B0F17] p-1 rounded-xl border border-slate-200 dark:border-[#1E293B]">
           {(['1M', '3M', '6M', '1Y', '5Y'] as Timeframe[]).map(tf => (
             <button
               key={tf}
               onClick={() => setCompTimeframe(tf)}
               className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
                 compTimeframe === tf
-                  ? 'bg-indigo-600 text-white shadow-md'
+                  ? 'bg-emerald-600 text-white shadow-md'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -82,13 +82,13 @@ export const CompareView: React.FC = () => {
       </div>
 
       {/* Selected Tickers Pills & Add Ticker Bar */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-slate-400 uppercase mr-1">Active Equities ({selectedTickers.length}/4):</span>
           {selectedTickers.map(sym => (
             <div
               key={sym}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-bold"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 font-mono text-xs font-bold"
             >
               <span>{sym}</span>
               {selectedTickers.length > 2 && (
@@ -114,8 +114,8 @@ export const CompareView: React.FC = () => {
               disabled={selectedTickers.includes(stk.symbol) || selectedTickers.length >= 4}
               className={`px-2.5 py-1 rounded-lg font-mono text-[11px] border transition-colors ${
                 selectedTickers.includes(stk.symbol)
-                  ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400'
-                  : 'bg-slate-100 dark:bg-slate-800 hover:bg-indigo-500 hover:text-white border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+                  ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-[#0B0F17] border-slate-200 dark:border-[#1E293B] text-slate-400'
+                  : 'bg-slate-100 dark:bg-[#151D2F] hover:bg-emerald-600 hover:text-white border-slate-200 dark:border-[#1E293B] text-slate-700 dark:text-slate-300'
               }`}
             >
               +{stk.symbol}
@@ -137,14 +137,14 @@ export const CompareView: React.FC = () => {
 
       {/* Comparative Metrics Table */}
       {compData && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm overflow-hidden">
           <h3 className="font-bold text-base text-slate-900 dark:text-white mb-4">
             Cross-Asset Risk & Return Comparison Table ({compTimeframe})
           </h3>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-800/50 text-slate-400 font-sans uppercase tracking-wider text-[10px]">
+                <tr className="bg-slate-50 dark:bg-[#0B0F17] text-slate-400 font-sans uppercase tracking-wider text-[10px]">
                   <th className="p-3">Ticker</th>
                   <th className="p-3">Company Name</th>
                   <th className="p-3">Price</th>
@@ -157,13 +157,13 @@ export const CompareView: React.FC = () => {
                   <th className="p-3">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/50 text-slate-700 dark:text-slate-300">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#1E293B] text-slate-700 dark:text-slate-300">
                 {compData.metrics_table.map((row, idx) => (
                   <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="p-3 font-bold text-indigo-500 font-mono">{row.symbol}</td>
+                    <td className="p-3 font-bold text-indigo-400 font-mono">{row.symbol}</td>
                     <td className="p-3 font-sans font-medium text-slate-900 dark:text-white">{row.name}</td>
                     <td className="p-3 font-bold">{row.currency_symbol}{row.current_price.toFixed(2)}</td>
-                    <td className={`p-3 font-semibold ${row.total_period_return_pct >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                    <td className={`p-3 font-semibold ${row.total_period_return_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                       {row.total_period_return_pct >= 0 ? '+' : ''}{row.total_period_return_pct.toFixed(2)}%
                     </td>
                     <td className="p-3">{row.annualized_volatility_pct}%</td>
@@ -174,7 +174,7 @@ export const CompareView: React.FC = () => {
                     <td className="p-3">
                       <button
                         onClick={() => selectStockAndNavigate(row.symbol, 'dashboard')}
-                        className="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-sans text-[11px] font-semibold transition-colors"
+                        className="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-sans text-[11px] font-semibold transition-colors"
                       >
                         Analyze
                       </button>
@@ -189,7 +189,7 @@ export const CompareView: React.FC = () => {
 
       {/* Correlation Matrix Heatmap */}
       {compData && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
+        <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm">
           <div className="mb-4">
             <h3 className="font-bold text-base text-slate-900 dark:text-white">
               Pearson Return Correlation Matrix
@@ -202,14 +202,14 @@ export const CompareView: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-center text-xs font-mono max-w-lg">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-800 text-slate-400 font-sans text-[11px]">
+                <tr className="bg-slate-50 dark:bg-[#0B0F17] text-slate-400 font-sans text-[11px]">
                   <th className="p-3 text-left">Ticker</th>
                   {compData.symbols.map(s => (
                     <th key={s} className="p-3">{s}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#1E293B]">
                 {compData.symbols.map(s1 => (
                   <tr key={s1}>
                     <td className="p-3 font-bold text-left text-slate-900 dark:text-white">{s1}</td>
@@ -219,7 +219,7 @@ export const CompareView: React.FC = () => {
                       const bgClass = isSelf 
                         ? 'bg-indigo-500/20 text-indigo-400 font-bold' 
                         : corr > 0.7 
-                        ? 'bg-emerald-500/15 text-emerald-500' 
+                        ? 'bg-emerald-500/15 text-emerald-400' 
                         : 'bg-blue-500/10 text-blue-400';
                       return (
                         <td key={s2} className={`p-3 ${bgClass}`}>

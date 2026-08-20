@@ -8,11 +8,11 @@ export const WatchlistView: React.FC = () => {
   return (
     <div className="space-y-6 pb-12 animate-fade-in">
       {/* Header */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5">
             <span>Portfolio Watchlist</span>
-            <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 border border-indigo-500/20">
+            <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               {watchlist.length} Tracked
             </span>
           </h1>
@@ -23,7 +23,7 @@ export const WatchlistView: React.FC = () => {
 
         <button
           onClick={() => setIsSearchOpen(true)}
-          className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs sm:text-sm rounded-xl shadow-md shadow-indigo-600/20 transition-all flex items-center gap-2 self-start sm:self-auto"
+          className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs sm:text-sm rounded-xl shadow-md shadow-emerald-600/20 transition-all flex items-center gap-2 self-start sm:self-auto"
         >
           <span>+ Add Equity</span>
         </button>
@@ -31,8 +31,8 @@ export const WatchlistView: React.FC = () => {
 
       {/* Watchlist Items */}
       {watchlist.length === 0 ? (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 text-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-2xl mx-auto">
+        <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl p-12 text-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-2xl mx-auto">
             ⭐
           </div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white">Your Watchlist is Empty</h3>
@@ -41,17 +41,17 @@ export const WatchlistView: React.FC = () => {
           </p>
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl"
+            className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl"
           >
             Browse Equities
           </button>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-800/60 text-slate-400 font-sans uppercase tracking-wider text-[10px] border-b border-slate-100 dark:border-slate-800">
+                <tr className="bg-slate-50 dark:bg-[#0B0F17] text-slate-400 font-sans uppercase tracking-wider text-[10px] border-b border-slate-100 dark:border-[#1E293B]">
                   <th className="p-4">Symbol</th>
                   <th className="p-4">Company Name</th>
                   <th className="p-4">Current Price</th>
@@ -61,10 +61,10 @@ export const WatchlistView: React.FC = () => {
                   <th className="p-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono text-slate-700 dark:text-slate-300">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#1E293B] font-mono text-slate-700 dark:text-slate-300">
                 {watchlist.map(item => (
                   <tr key={item.symbol} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="p-4 font-bold text-indigo-500 text-sm">
+                    <td className="p-4 font-bold text-indigo-400 text-sm">
                       {item.symbol}
                     </td>
                     <td className="p-4 font-sans font-medium text-slate-900 dark:text-white">
@@ -76,8 +76,8 @@ export const WatchlistView: React.FC = () => {
                     <td className="p-4">
                       <span className={`font-semibold px-2 py-0.5 rounded ${
                         item.daily_change_pct >= 0 
-                          ? 'bg-emerald-500/10 text-emerald-500' 
-                          : 'bg-rose-500/10 text-rose-500'
+                          ? 'bg-emerald-500/10 text-emerald-400' 
+                          : 'bg-rose-500/10 text-rose-400'
                       }`}>
                         {item.daily_change_pct >= 0 ? '+' : ''}{item.daily_change_pct.toFixed(2)}%
                       </span>
@@ -85,10 +85,10 @@ export const WatchlistView: React.FC = () => {
                     <td className="p-4">
                       <span className={`px-2 py-0.5 rounded font-semibold text-[11px] ${
                         item.forecast_5d_dir === 'Bullish' 
-                          ? 'bg-emerald-500/10 text-emerald-500' 
+                          ? 'bg-emerald-500/10 text-emerald-400' 
                           : item.forecast_5d_dir === 'Bearish' 
-                          ? 'bg-rose-500/10 text-rose-500' 
-                          : 'bg-blue-500/10 text-blue-500'
+                          ? 'bg-rose-500/10 text-rose-400' 
+                          : 'bg-blue-500/10 text-blue-400'
                       }`}>
                         {item.forecast_5d_dir} ({item.forecast_5d_pct >= 0 ? '+' : ''}{item.forecast_5d_pct.toFixed(1)}%)
                       </span>
@@ -99,7 +99,7 @@ export const WatchlistView: React.FC = () => {
                     <td className="p-4 text-right space-x-2">
                       <button
                         onClick={() => selectStockAndNavigate(item.symbol, 'forecast')}
-                        className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-sans text-xs font-semibold rounded-lg transition-colors"
+                        className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-sans text-xs font-semibold rounded-lg transition-colors"
                       >
                         Forecast
                       </button>

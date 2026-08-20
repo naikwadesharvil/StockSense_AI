@@ -83,12 +83,50 @@ const StockContext = createContext<StockContextType | undefined>(undefined);
 
 export const StockProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Navigation & UI State
-  const [currentView, setCurrentView] = useState<AppView>('landing');
+  const getViewFromPath = (): AppView => {
+    if (typeof window === 'undefined') return 'dashboard';
+    const path = window.location.pathname.replace(/^\/+/, '').toLowerCase();
+    const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+    const route = path || hash;
+    if (route === 'dashboard') return 'dashboard';
+    if (route === 'trending' || route === 'markets') return 'trending';
+    if (route === 'forecast') return 'forecast';
+    if (route === 'technical' || route === 'technicals' || route === 'screener') return 'technicals';
+    if (route === 'performance' || route === 'reports') return 'performance';
+    if (route === 'compare' || route === 'portfolio') return 'compare';
+    if (route === 'watchlist' || route === 'alerts') return 'watchlist';
+    if (route === 'sentiment') return 'sentiment';
+    if (route === 'pricing') return 'pricing';
+    if (route === 'settings') return 'settings';
+    if (route === 'help' || route === 'support') return 'help';
+    if (route === 'about') return 'about';
+    if (route === 'landing' || route === 'home') return 'landing';
+    return 'dashboard';
+  };
+
+  const [currentView, setCurrentViewState] = useState<AppView>(getViewFromPath);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [chartType, setChartType] = useState<ChartType>('candlestick');
   const [serverConnected, setServerConnected] = useState<boolean>(true);
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>(() => WatchlistStorage.getItems());
   const [toasts, setToasts] = useState<ToastItem[]>([]);
+
+  const setCurrentView = (view: AppView) => {
+    setCurrentViewState(view);
+    if (typeof window !== 'undefined') {
+      const path = view === 'dashboard' ? '/' : `/${view}`;
+      window.history.pushState({ view }, '', path);
+    }
+  };
+
+  // Sync with browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentViewState(getViewFromPath());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Active Stock & Query State
   const [symbol, setSymbol] = useState<string>('NVDA');
