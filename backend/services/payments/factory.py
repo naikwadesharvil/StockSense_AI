@@ -24,7 +24,7 @@ def get_payment_provider(provider_name: Optional[str] = None) -> BasePaymentProv
         return StripePaymentProvider()
     elif p_name == "razorpay":
         return RazorpayPaymentProvider()
-    elif p_name in ["sandbox", "mock", "sandbox_mock"]:
+    elif p_name in ["sandbox", "mock", "sandbox_mock", "stripe_sandbox", "razorpay_sandbox"]:
         return MockSandboxPaymentProvider()
 
     raise ValueError(f"Unsupported payment provider '{p_name}'. Supported providers: stripe, razorpay, sandbox_mock")

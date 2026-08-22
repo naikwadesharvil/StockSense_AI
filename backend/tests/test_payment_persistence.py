@@ -204,6 +204,8 @@ class TestPaymentPersistence(unittest.TestCase):
                 return event_id in shared_db["events"]
             def record_processed_event(self, event_id: str):
                 shared_db["events"].add(event_id)
+            def delete_subscription(self, user_id: str):
+                shared_db["subscriptions"].pop(user_id, None)
             def clear_all(self):
                 shared_db["subscriptions"].clear()
                 shared_db["events"].clear()

@@ -17,7 +17,7 @@ Implement a database-backed adapter (e.g., PostgreSQL, Redis, DynamoDB) implemen
 
 from abc import ABC, abstractmethod
 from typing import Dict, List, Optional, Any
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import threading
 
 from backend.services.payments.models import (
@@ -112,6 +112,10 @@ class BaseEntitlementStore(ABC):
     def record_processed_event(self, event_id: str) -> None:
         pass
 
+    def delete_subscription(self, user_id: str) -> None:
+        """Deletes user subscription record from store (optional method for test teardowns)."""
+        pass
+
     @abstractmethod
     def clear_all(self) -> None:
         """Clears all stored records (useful for test teardowns)."""
@@ -147,7 +151,11 @@ class InMemoryEntitlementStore(BaseEntitlementStore):
 
     def record_processed_event(self, event_id: str) -> None:
         with self._lock:
-            self._processed_events[event_id] = datetime.utcnow()
+            self._processed_events[event_id] = datetime.now(timezone.utc)
+
+    def delete_subscription(self, user_id: str) -> None:
+        with self._lock:
+            self._user_subscriptions.pop(user_id, None)
 
     def clear_all(self) -> None:
         with self._lock:
@@ -238,13 +246,21 @@ class EntitlementManager:
         cls._store.record_processed_event(event_id)
 
     @classmethod
+    def delete_subscription(cls, user_id: str) -> None:
+        """Deletes user subscription from store (useful for test isolation)."""
+        cls._store.delete_subscription(user_id)
+
+    @classmethod
     def get_user_subscription(cls, user_id: str = "default_user") -> SubscriptionRecord:
         sub = cls._store.get_subscription(user_id)
         if sub is not None:
             # Check for automatic expiry
             try:
-                end_dt = datetime.fromisoformat(sub.current_period_end)
-                if datetime.utcnow() > end_dt and sub.status == SubscriptionStatus.ACTIVE:
+                end_str = sub.current_period_end.replace("Z", "+00:00")
+                end_dt = datetime.fromisoformat(end_str)
+                if end_dt.tzinfo is None:
+                    end_dt = end_dt.replace(tzinfo=timezone.utc)
+                if datetime.now(timezone.utc) > end_dt and sub.status == SubscriptionStatus.ACTIVE:
                     sub.status = SubscriptionStatus.EXPIRED
                     cls._store.save_subscription(user_id, sub)
             except Exception:
@@ -252,6 +268,7 @@ class EntitlementManager:
             return sub
 
         # Default Free Tier Record
+        now = datetime.now(timezone.utc)
         free_sub = SubscriptionRecord(
             subscription_id="sub_free_default",
             user_id=user_id,
@@ -260,8 +277,8 @@ class EntitlementManager:
             status=SubscriptionStatus.ACTIVE,
             currency="USD",
             amount=0.0,
-            current_period_start=datetime.utcnow().isoformat(),
-            current_period_end=(datetime.utcnow() + timedelta(days=3650)).isoformat()
+            current_period_start=now.isoformat(),
+            current_period_end=(now + timedelta(days=3650)).isoformat()
         )
         cls._store.save_subscription(user_id, free_sub)
         return free_sub
@@ -286,11 +303,15 @@ class EntitlementManager:
                 return existing
             return cls.get_user_subscription(user_id)
 
-        now = datetime.utcnow()
+        clean_plan_id = plan_id.lower().strip()
+        if clean_plan_id not in SUBSCRIPTION_PLANS:
+            clean_plan_id = "free"
+
+        now = datetime.now(timezone.utc)
         record = SubscriptionRecord(
             subscription_id=subscription_id,
             user_id=user_id,
-            plan_id=plan_id,
+            plan_id=clean_plan_id,
             provider=provider,
             status=status,
             currency=currency,
@@ -309,6 +330,8 @@ class EntitlementManager:
     @classmethod
     def cancel_subscription(cls, user_id: str = "default_user") -> bool:
         sub = cls._store.get_subscription(user_id)
+        if sub is None:
+            sub = cls.get_user_subscription(user_id)
         if sub is not None:
             sub.status = SubscriptionStatus.CANCELED
             sub.cancel_at_period_end = True
@@ -325,7 +348,7 @@ class EntitlementManager:
         if sub.status != SubscriptionStatus.ACTIVE and sub.status != SubscriptionStatus.TRIALING:
             plan = SUBSCRIPTION_PLANS["free"]
         else:
-            plan = SUBSCRIPTION_PLANS.get(sub.plan_id, SUBSCRIPTION_PLANS["free"])
+            plan = SUBSCRIPTION_PLANS.get(sub.plan_id.lower(), SUBSCRIPTION_PLANS["free"])
 
         if feature == "full_universe":
             return plan.access_full_universe

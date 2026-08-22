@@ -58,7 +58,7 @@ class MockSandboxPaymentProvider(BasePaymentProvider):
         )
 
     def verify_webhook(self, payload: bytes, headers: Dict[str, str]) -> WebhookEventResult:
-        sig = headers.get("x-mock-signature", "")
+        sig = headers.get("x-mock-signature") or headers.get("X-Mock-Signature", "")
         expected = hmac.new(self.test_secret.encode("utf-8"), payload, hashlib.sha256).hexdigest()
 
         if not sig or not hmac.compare_digest(sig, expected):
@@ -70,14 +70,32 @@ class MockSandboxPaymentProvider(BasePaymentProvider):
                 message="Invalid mock signature"
             )
 
-        data = json.loads(payload.decode('utf-8'))
+        try:
+            data = json.loads(payload.decode('utf-8'))
+        except Exception as e:
+            return WebhookEventResult(
+                event_id="unknown",
+                event_type="error",
+                provider="sandbox_mock",
+                success=False,
+                message=f"Payload decode error: {e}"
+            )
+
+        event_type = data.get("type", "checkout.completed")
+        raw_status = data.get("status", "ACTIVE")
+        status = SubscriptionStatus.ACTIVE
+        if event_type in ["subscription.deleted", "subscription.cancelled", "customer.subscription.deleted"] or raw_status == "CANCELED":
+            status = SubscriptionStatus.CANCELED
+        elif raw_status in [s.value for s in SubscriptionStatus]:
+            status = SubscriptionStatus(raw_status)
+
         return WebhookEventResult(
             event_id=data.get("id", "evt_test"),
-            event_type=data.get("type", "checkout.completed"),
+            event_type=event_type,
             provider="sandbox_mock",
             success=True,
             subscription_id=data.get("subscription_id", "sub_test_123"),
-            status=SubscriptionStatus.ACTIVE,
+            status=status,
             message="Mock webhook verified",
             user_id=data.get("user_id", "default_user"),
             plan_id=data.get("plan_id", "pro")

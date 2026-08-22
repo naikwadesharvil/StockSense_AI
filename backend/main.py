@@ -298,6 +298,16 @@ async def razorpay_webhook(request: Request):
 
     return {"received": True, "event_id": result.event_id}
 
+@router.post("/payments/cancel")
+def cancel_subscription(payload: Dict[str, Any] = Body(default={})):
+    user_id = payload.get("user_id", "default_user") if payload else "default_user"
+    success = EntitlementManager.cancel_subscription(user_id)
+    sub = EntitlementManager.get_user_subscription(user_id)
+    return {
+        "status": "success" if success else "failed",
+        "subscription": sub.to_dict()
+    }
+
 # Mount the router under both prefix="" (for Vercel serverless /api dispatch)
 # and prefix="/api" (for direct root calls or standard local proxies)
 app.include_router(router, prefix="")

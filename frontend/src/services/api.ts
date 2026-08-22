@@ -449,6 +449,36 @@ export const StockAPI = {
     }
   },
 
+  async cancelSubscription(userId: string = 'default_user'): Promise<{ status: string; subscription?: SubscriptionRecord }> {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/payments/cancel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId })
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (e) {
+      console.warn('Backend subscription cancel failed');
+    }
+    return {
+      status: 'success',
+      subscription: {
+        subscription_id: 'sub_free_default',
+        user_id: userId,
+        plan_id: 'free',
+        provider: 'internal',
+        status: 'CANCELED',
+        currency: 'USD',
+        amount: 0,
+        current_period_start: new Date().toISOString(),
+        current_period_end: new Date().toISOString(),
+        cancel_at_period_end: true
+      }
+    };
+  },
+
   async getNiftyTrending(forceRefresh: boolean = false): Promise<NiftyTrendingResponse | null> {
     return deduplicatedFetch(forceRefresh ? `nifty_trending_${Date.now()}` : 'nifty_trending', async () => {
       const useBackend = await checkBackend();

@@ -290,6 +290,22 @@ class PostgresSupabaseEntitlementStore(BaseEntitlementStore):
             logger.error(f"Failed to record processed event {event_id}: {e}")
             raise
 
+    def delete_subscription(self, user_id: str) -> None:
+        """
+        Deletes subscription record for a specific user.
+        """
+        if not self.is_configured():
+            return
+
+        clean_user_id = user_id.strip()
+        encoded_user = urllib.parse.quote(clean_user_id)
+        endpoint = f"user_subscriptions?user_id=eq.{encoded_user}"
+
+        try:
+            self._execute_http_request(endpoint, method="DELETE")
+        except Exception as e:
+            logger.warning(f"delete_subscription warning for user {user_id}: {e}")
+
     def clear_all(self) -> None:
         """
         Clears all stored records (used primarily for test isolation and teardown).

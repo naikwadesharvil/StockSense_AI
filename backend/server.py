@@ -253,7 +253,11 @@ class StockSenseHandler(SimpleHTTPRequestHandler):
             if not plan:
                 return self._send_json({"error": f"Invalid plan_id '{plan_id}'"}, status=400)
 
-            provider = get_payment_provider(provider_name)
+            try:
+                provider = get_payment_provider(provider_name)
+            except ValueError as e:
+                return self._send_json({"error": str(e)}, status=400)
+
             if not provider.is_configured():
                 return self._send_json({
                     "error": "PAYMENTS_NOT_CONFIGURED",
@@ -278,6 +282,16 @@ class StockSenseHandler(SimpleHTTPRequestHandler):
                 })
             except Exception as e:
                 return self._send_json({"error": f"Checkout creation failed: {e}"}, status=500)
+
+        # Subscription Cancellation Endpoint
+        elif path == "/api/payments/cancel":
+            user_id = payload.get("user_id", "default_user") if payload else "default_user"
+            success = EntitlementManager.cancel_subscription(user_id)
+            sub = EntitlementManager.get_user_subscription(user_id)
+            return self._send_json({
+                "status": "success" if success else "failed",
+                "subscription": sub.to_dict()
+            })
 
         # Stripe Webhook Endpoint (HMAC SHA256 Signature Verification)
         elif path == "/api/payments/webhooks/stripe":

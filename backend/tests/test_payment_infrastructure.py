@@ -433,6 +433,112 @@ class TestPaymentInfrastructure(unittest.TestCase):
         EntitlementManager.record_processed_event("evt_store_test_99")
         self.assertTrue(EntitlementManager.is_event_processed("evt_store_test_99"))
 
+    def test_sandbox_provider_aliases(self):
+        """Verifies stripe_sandbox and razorpay_sandbox aliases instantiate MockSandboxPaymentProvider."""
+        p_stripe_sb = get_payment_provider("stripe_sandbox")
+        self.assertIsInstance(p_stripe_sb, MockSandboxPaymentProvider)
+        p_rzp_sb = get_payment_provider("razorpay_sandbox")
+        self.assertIsInstance(p_rzp_sb, MockSandboxPaymentProvider)
+
+    def test_mock_sandbox_malformed_payload_and_cancellation(self):
+        """Verifies MockSandboxPaymentProvider safely handles malformed JSON and maps cancellation event types."""
+        prov = MockSandboxPaymentProvider(test_secret="mock_sec_123")
+
+        # 1. Malformed JSON payload
+        bad_json = b"not a valid json payload {"
+        bad_sig = hmac.new("mock_sec_123".encode("utf-8"), bad_json, hashlib.sha256).hexdigest()
+        bad_res = prov.verify_webhook(bad_json, {"x-mock-signature": bad_sig})
+        self.assertFalse(bad_res.success)
+        self.assertIn("Payload decode error", bad_res.message)
+
+        # 2. Cancellation webhook event
+        cancel_payload = json.dumps({
+            "id": "evt_cancel_sb_1",
+            "type": "subscription.cancelled",
+            "subscription_id": "sub_sb_cancel",
+            "user_id": "u_cancel_sb",
+            "status": "CANCELED"
+        }).encode("utf-8")
+        cancel_sig = hmac.new("mock_sec_123".encode("utf-8"), cancel_payload, hashlib.sha256).hexdigest()
+        cancel_res = prov.verify_webhook(cancel_payload, {"x-mock-signature": cancel_sig})
+        self.assertTrue(cancel_res.success)
+        self.assertEqual(cancel_res.status, SubscriptionStatus.CANCELED)
+
+    def test_payments_cancel_api_endpoint(self):
+        """Verifies FastAPI /api/payments/cancel endpoint cancels active subscription and returns CANCELED status."""
+        from fastapi.testclient import TestClient
+        from backend.main import app
+
+        client = TestClient(app)
+        # Create an active subscription
+        EntitlementManager.update_subscription(
+            user_id="user_cancel_api_test",
+            plan_id="pro",
+            provider="stripe_sandbox",
+            subscription_id="sub_test_cancel_api",
+            status=SubscriptionStatus.ACTIVE,
+            currency="USD",
+            amount=29.0
+        )
+        sub_before = EntitlementManager.get_user_subscription("user_cancel_api_test")
+        self.assertEqual(sub_before.status, SubscriptionStatus.ACTIVE)
+
+        # Cancel via API
+        res = client.post("/api/payments/cancel", json={"user_id": "user_cancel_api_test"})
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(data["status"], "success")
+        self.assertEqual(data["subscription"]["status"], "CANCELED")
+        self.assertTrue(data["subscription"]["cancel_at_period_end"])
+
+    def test_automatic_expiry_timezone_handling(self):
+        """Verifies timezone-aware ISO strings correctly trigger automatic expiration when end date has passed."""
+        from datetime import datetime, timedelta, timezone
+
+        expired_date = (datetime.now(timezone.utc) - timedelta(days=5)).isoformat()
+        expired_sub = SubscriptionRecord(
+            subscription_id="sub_exp_test",
+            user_id="user_expired_tz_test",
+            plan_id="pro",
+            provider="internal",
+            status=SubscriptionStatus.ACTIVE,
+            currency="USD",
+            amount=29.0,
+            current_period_start=(datetime.now(timezone.utc) - timedelta(days=35)).isoformat(),
+            current_period_end=expired_date
+        )
+        EntitlementManager.get_store().save_subscription("user_expired_tz_test", expired_sub)
+
+        # Retrieve and verify auto-expiration
+        sub_fetched = EntitlementManager.get_user_subscription("user_expired_tz_test")
+        self.assertEqual(sub_fetched.status, SubscriptionStatus.EXPIRED)
+        self.assertFalse(EntitlementManager.check_entitlement("user_expired_tz_test", "full_universe"))
+
+    def test_delete_subscription_surgical_teardown(self):
+        """Verifies delete_subscription removes specific user record without affecting other users."""
+        EntitlementManager.update_subscription(
+            user_id="user_keep_1",
+            plan_id="pro",
+            provider="internal",
+            subscription_id="sub_keep_1",
+            status=SubscriptionStatus.ACTIVE,
+            currency="USD",
+            amount=29.0
+        )
+        EntitlementManager.update_subscription(
+            user_id="user_delete_1",
+            plan_id="premium",
+            provider="internal",
+            subscription_id="sub_del_1",
+            status=SubscriptionStatus.ACTIVE,
+            currency="USD",
+            amount=79.0
+        )
+
+        EntitlementManager.delete_subscription("user_delete_1")
+        self.assertIsNone(EntitlementManager.get_store().get_subscription("user_delete_1"))
+        self.assertIsNotNone(EntitlementManager.get_store().get_subscription("user_keep_1"))
+
 
 if __name__ == "__main__":
     unittest.main()
