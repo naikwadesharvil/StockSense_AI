@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStock } from '../../context/StockContext';
+import { useTheme } from '../../context/ThemeContext';
 import { ForecastHorizon, ModelType, ChartType } from '../../types/stock';
 import { StockAPI, WatchlistStorage } from '../../services/api';
 
@@ -56,6 +57,7 @@ export const SettingsView: React.FC = () => {
     watchlist,
     addToast 
   } = useStock();
+  const { setTheme } = useTheme();
 
   const [activeTab, setActiveTab] = useState<'display' | 'quant' | 'data' | 'storage' | 'system'>('display');
   const [settings, setSettings] = useState<TerminalSettings>(() => {
@@ -72,8 +74,21 @@ export const SettingsView: React.FC = () => {
   const [latencyMs, setLatencyMs] = useState<number | null>(null);
   const [backendHealth, setBackendHealth] = useState<{ status: string; timestamp: string } | null>(null);
 
+  // Apply theme to document root and context
+  const applyTheme = (t: 'dark' | 'light' | 'system') => {
+    if (t === 'system') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(prefersDark ? 'dark' : 'light');
+    } else {
+      setTheme(t);
+    }
+  };
+
   // Sync settings changes
   const updateSetting = <K extends keyof TerminalSettings>(key: K, value: TerminalSettings[K]) => {
+    if (key === 'theme') {
+      applyTheme(value as any);
+    }
     setSettings(prev => {
       const updated = { ...prev, [key]: value };
       try {
@@ -139,6 +154,7 @@ export const SettingsView: React.FC = () => {
   const handleResetDefaults = () => {
     setSettings(DEFAULT_SETTINGS);
     localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(DEFAULT_SETTINGS));
+    applyTheme('dark');
     setChartType('candlestick');
     setSelectedHorizon('5d');
     setSelectedModel('validation_selected');

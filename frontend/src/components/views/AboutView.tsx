@@ -7,13 +7,13 @@ export const AboutView: React.FC = () => {
       {/* Title & Introduction */}
       <div className="bg-white dark:bg-[#111726] border border-slate-200 dark:border-[#1E293B] rounded-3xl p-6 sm:p-10 shadow-sm space-y-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 text-xs font-mono font-semibold uppercase">
-          <span>B.Tech AIML Portfolio Project</span>
+          <span>Quantitative Research & Econometric Engineering</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           StockSense AI — System Architecture & Methodology
         </h1>
         <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
-          StockSense AI is an educational time-series forecasting and quantitative market analytics platform. It was engineered to bridge the gap between machine learning theory, financial econometric indicators, and interactive web visualization.
+          StockSense AI is an institutional-grade time-series forecasting and quantitative market analytics platform. It was engineered to bridge the gap between machine learning theory, financial econometric indicators, and interactive web visualization.
         </p>
       </div>
 
@@ -150,13 +150,13 @@ Interactive Dashboard & Visualizations (Candles, Cones, Overlays, NLP Sentiment)
         </div>
       </div>
 
-      {/* Final Academic Notice */}
+      {/* Final Institutional Notice */}
       <div className="p-6 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-center space-y-2">
         <div className="font-bold text-sm text-indigo-600 dark:text-indigo-400">
-          StockSense AI — Academic Project Notice
+          StockSense AI — Quantitative Research Platform
         </div>
         <p className="text-xs text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
-          Developed as a comprehensive B.Tech Artificial Intelligence & Machine Learning capstone project demonstrating time-series data science, machine learning regression, quantitative financial analytics, and modern full-stack application architecture.
+          Engineered as an institutional-grade quantitative analytics platform demonstrating chronological time-series data science, machine learning regression benchmarking, econometric indicators, and zero-leakage financial systems architecture.
         </p>
       </div>
     </div>

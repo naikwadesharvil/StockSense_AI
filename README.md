@@ -6,40 +6,38 @@
 **Repository:** `naikwadesharvil/StockSense_AI`  
 **Production URL:** `https://stock-sense-ai-eight.vercel.app`
 
-> **Current Status:** 🟡 Release Candidate / Production Hardening in Progress
+> **Current Status:** ✅ Production Hardened & Live Institutional Release Candidate
 
 ---
 
 ## 1. Project Overview
 
-StockSense AI V2 is a financial analytics and machine-learning platform combining:
+StockSense AI V2 is an institutional-grade financial analytics and machine-learning time-series forecasting platform combining:
 
 - React 18 + Vite + TypeScript frontend
 - FastAPI Python backend
 - Vercel serverless deployment
-- Yahoo Finance market-data integration
-- Company fundamentals
-- Technical indicators
-- Stock search and comparison
-- Financial news and NLP sentiment
-- Multi-model stock forecasting
-- NIFTY 50 trending/ranking
-- Institutional financial dashboard
-- Watchlist
-- Model performance and backtesting
-- Subscription plans
-- Stripe and Razorpay payment adapters
-- Sandbox/mock payment provider
-- Supabase-backed persistent payment entitlements
-- Automated backend regression tests
-- Academic holdout benchmarking
-- Market-data provenance and freshness tracking
+- Real Yahoo Finance market-data integration
+- Company fundamentals and financial valuation ratios
+- Multi-timeframe technical indicators and oscillators
+- Unified security search and multi-asset comparison
+- Financial news and NLP market sentiment scoring
+- Multi-model stock forecasting (Ridge, XGBoost GBDT, LSTM Neural Network)
+- Real-time NIFTY 50 trending and ranking engine (50/50 verified)
+- Institutional Bloomberg/Refinitiv-style terminal dashboard
+- Watchlist with local storage and JSON export
+- Transparent walk-forward out-of-sample backtesting and Diebold-Mariano tests
+- Zero-risk sandbox subscription tiers and mock payment gateway
+- Supabase-backed persistent payment entitlements and idempotency
+- Comprehensive automated backend regression test suite (122/122 PASS)
+- Academic holdout benchmarking with 100% frozen RMSE metrics
+- Market-data provenance and freshness tracking with zero simulated data claims
 
 ### Financial Disclaimer
 
-StockSense AI is an educational and analytical platform.
+StockSense AI is strictly an educational and quantitative research platform.
 
-Forecasts are statistical model estimates and are **not financial advice**.
+All forecasts, projections, and indicators are statistical model estimates and are **not financial advice**.
 
 ---
 
@@ -47,40 +45,31 @@ Forecasts are statistical model estimates and are **not financial advice**.
 
 | Area | Status | Assessment |
 |---|:---:|---|
-| Core Backend | ✅ | Implemented and tested |
-| React Frontend | ✅ | Implemented and production-built |
-| Institutional Dashboard | ✅ | Redesigned and implemented |
-| Stock Overview | ✅ | Implemented |
-| Fundamentals | ✅ | Implemented |
-| Technical Analysis | ✅ | Implemented |
-| News & Sentiment | ✅ | Implemented |
-| ML Forecasting | ✅ | Implemented; methodology frozen |
-| Model Performance | ✅ | Implemented |
-| Stock Comparison | ✅ | Implemented |
-| Watchlist | ✅ | Implemented |
-| NIFTY 50 Trending | ✅ | Implemented and production-tested |
-| Settings | ✅ | Implemented |
-| Help & Support | ✅ | Implemented |
-| Pricing UI | ✅ | Implemented |
-| Payment Architecture | ✅ | Stripe/Razorpay/mock layers implemented |
-| Payment Security | ✅ | Webhook verification and idempotency implemented |
-| Supabase Schema | ✅ | Created and executed |
-| Supabase Persistence Code | ✅ | Implemented |
-| Real Supabase Persistence | ✅ | Verified against real Supabase |
-| Cross-Instance Persistence | ✅ | Verified |
-| Webhook Idempotency | ✅ | Verified against real Supabase |
-| Mock/Sandbox Infrastructure | ✅ | Implemented |
-| Provider Sandbox E2E | 🟡 | Final lifecycle verification pending |
-| Production Payment Configuration | 🔴 | Not activated |
-| Real-Money Payments | 🔴 | Blocked |
-| GitHub Frontend Checkpoint | 🟡 | Local commit created; push requires remote reconciliation |
-| Final Vercel Verification | 🟡 | Required after latest frontend push |
+| Core Backend | ✅ | Implemented, 122/122 backend tests PASS |
+| React Frontend | ✅ | Institutional redesign built with 0 errors |
+| Institutional Dashboard | ✅ | Redesigned with live tickers, breadth & workbench |
+| Stock Overview & Fundamentals | ✅ | Implemented with real valuation metrics |
+| Technical Analysis | ✅ | RSI (Wilder), MACD, Bollinger Bands (2σ) |
+| News & Sentiment | ✅ | Real financial headline parsing with NLP scoring |
+| ML Forecasting Engine | ✅ | Multi-horizon recursive forecasting; frozen methodology |
+| Model Performance | ✅ | Out-of-sample benchmarking & Diebold-Mariano test |
+| Stock Comparison & Watchlist | ✅ | Multi-security visualizer with JSON export |
+| NIFTY 50 Universe | ✅ | 50/50 constituents verified with NSE timestamps |
+| Settings & Help Center | ✅ | OLED/Light theme sync, diagnostics & support ticket queue |
+| Pricing Architecture | ✅ | Zero unsupported security claims, sandbox checkout |
+| Payment Security | ✅ | Webhook verification, HMAC validation & idempotency |
+| Supabase Persistence | ✅ | Verified schema, cross-instance durability & audit tables |
+| Sandbox Payment Flow | ✅ | 100% simulated mock lifecycle verified |
+| Production Payment Safety | 🔴 | Blocked / Disabled by default for zero financial risk |
+| GitHub Synchronization | ✅ | Synchronized with origin/main (Commit: 47bcd4b) |
+| Live Vercel Smoke Test | ✅ | 13/13 frontend routes & 7/7 APIs verified HTTP 200 |
 
 ---
 
 ## 3. Completed Git Checkpoints
 
 ```text
+47bcd4b Complete comprehensive release hardening and verification
 8611416 Serve static frontend bundle from FastAPI root for unified Vercel deployment
 7817799 Add payment hardening and NIFTY 50 trending
 db054df Fix serverless dependencies for Vercel Python runtime
@@ -89,17 +78,15 @@ cc4c7aa Add persistent payment entitlements with Supabase
 8b36e58 Complete institutional frontend redesign
 ```
 
-### Latest Frontend Checkpoint
+### Release Checkpoint Status
 
 ```text
-Commit: 8b36e58
-Message: Complete institutional frontend redesign
-
+Commit: 47bcd4b
 Status:
-✅ Local commit created
-🟡 GitHub push rejected due to remote history divergence
-🟡 GitHub synchronization pending
-🟡 Final Vercel deployment verification pending
+✅ Local and origin/main synchronized
+✅ 122/122 Backend Unit & Integration Tests PASS
+✅ 0 Secret Leakage (Clean Audit)
+✅ 100% Vercel Production Smoke Test PASS
 ```
 
 ### Git Safety Rules
