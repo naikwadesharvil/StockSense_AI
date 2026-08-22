@@ -92,7 +92,7 @@ export const StockProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     if (route === 'trending' || route === 'markets') return 'trending';
     if (route === 'forecast') return 'forecast';
     if (route === 'technical' || route === 'technicals' || route === 'screener') return 'technicals';
-    if (route === 'performance' || route === 'reports') return 'performance';
+    if (route === 'performance' || route === 'reports' || route === 'model-performance') return 'performance';
     if (route === 'compare' || route === 'portfolio') return 'compare';
     if (route === 'watchlist' || route === 'alerts') return 'watchlist';
     if (route === 'sentiment') return 'sentiment';
