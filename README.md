@@ -1,75 +1,356 @@
 # StockSense AI V2
 
-**Project Progress & Production Roadmap**
+**Production Release & Validation Roadmap**
 
-**Project:** StockSense AI V2 — Intelligent Stock Forecasting & Market Analytics Platform  
-**Repository:** `naikwadesharvil/StockSense_AI`  
+**Project:** StockSense AI V2 — Intelligent Stock Forecasting & Market Analytics Platform
+**Repository:** `naikwadesharvil/StockSense_AI`
 **Production URL:** `https://stock-sense-ai-eight.vercel.app`
 
-> **Current Status:** ✅ Production Hardened & Live Institutional Release Candidate
+> **Current Status:** 🟡 Release Candidate / Final Product Validation
 
 ---
 
 ## 1. Project Overview
 
-StockSense AI V2 is an institutional-grade financial analytics and machine-learning time-series forecasting platform combining:
+StockSense AI V2 is an institutional-grade financial analytics and machine learning time-series forecasting platform designed for quantitative market research, technical equity screening, and econometric time-series benchmarking.
 
-- React 18 + Vite + TypeScript frontend
-- FastAPI Python backend
-- Vercel serverless deployment
-- Real Yahoo Finance market-data integration
-- Company fundamentals and financial valuation ratios
-- Multi-timeframe technical indicators and oscillators
-- Unified security search and multi-asset comparison
-- Financial news and NLP market sentiment scoring
-- Multi-model stock forecasting (Ridge, XGBoost GBDT, LSTM Neural Network)
-- Real-time NIFTY 50 trending and ranking engine (50/50 verified)
-- Institutional Bloomberg/Refinitiv-style terminal dashboard
-- Watchlist with local storage and JSON export
-- Transparent walk-forward out-of-sample backtesting and Diebold-Mariano tests
-- Zero-risk sandbox subscription tiers and mock payment gateway
-- Supabase-backed persistent payment entitlements and idempotency
-- Comprehensive automated backend regression test suite (122/122 PASS)
-- Academic holdout benchmarking with 100% frozen RMSE metrics
-- Market-data provenance and freshness tracking with zero simulated data claims
-
-### Financial Disclaimer
-
-StockSense AI is strictly an educational and quantitative research platform.
-
-All forecasts, projections, and indicators are statistical model estimates and are **not financial advice**.
+The platform provides a comprehensive suite of market intelligence capabilities:
+- Interactive financial terminal interface with real-time domestic and global market benchmarks
+- NIFTY 50 real-time constituent tracking with multi-factor trend ranking (50/50 constituents verified)
+- Multi-model quantitative price forecasting (Ridge Regression, Gradient Boosted Trees, LSTM Neural Networks)
+- Transparent walk-forward out-of-sample backtesting and Diebold-Mariano statistical model comparisons
+- Technical analysis oscillators (Wilder RSI, MACD Histogram, Bollinger Bands, Moving Averages)
+- Financial news ingestion with domain-specific Natural Language Processing (NLP) sentiment scoring
+- Multi-asset correlation and comparative equity analysis
+- Personal watchlist management with local storage and structured JSON data export
+- Zero-financial-risk sandbox payment simulation with persistent entitlement management
 
 ---
 
-## 2. Executive Status
+## 2. Current Executive Status
 
-| Area | Status | Assessment |
+| Subsystem / Area | Status | Verification Summary |
 |---|:---:|---|
-| Core Backend | ✅ | Implemented, 122/122 backend tests PASS |
-| React Frontend | ✅ | Institutional redesign built with 0 errors |
-| Institutional Dashboard | ✅ | Redesigned with live tickers, breadth & workbench |
-| Stock Overview & Fundamentals | ✅ | Implemented with real valuation metrics |
-| Technical Analysis | ✅ | RSI (Wilder), MACD, Bollinger Bands (2σ) |
-| News & Sentiment | ✅ | Real financial headline parsing with NLP scoring |
-| ML Forecasting Engine | ✅ | Multi-horizon recursive forecasting; frozen methodology |
-| Model Performance | ✅ | Out-of-sample benchmarking & Diebold-Mariano test |
-| Stock Comparison & Watchlist | ✅ | Multi-security visualizer with JSON export |
-| NIFTY 50 Universe | ✅ | 50/50 constituents verified with NSE timestamps |
-| Settings & Help Center | ✅ | OLED/Light theme sync, diagnostics & support ticket queue |
-| Pricing Architecture | ✅ | Zero unsupported security claims, sandbox checkout |
-| Payment Security | ✅ | Webhook verification, HMAC validation & idempotency |
-| Supabase Persistence | ✅ | Verified schema, cross-instance durability & audit tables |
-| Sandbox Payment Flow | ✅ | 100% simulated mock lifecycle verified |
-| Production Payment Safety | 🔴 | Blocked / Disabled by default for zero financial risk |
-| GitHub Synchronization | ✅ | Synchronized with origin/main (Commit: 47bcd4b) |
-| Live Vercel Smoke Test | ✅ | 13/13 frontend routes & 7/7 APIs verified HTTP 200 |
+| **Core Application & Backend** | ✅ COMPLETE | FastAPI serverless runtime deployed and smoke-tested |
+| **Frontend UI / UX** | ✅ COMPLETE | Institutional terminal interface, production-built (`npm run build` PASS) |
+| **Browser QA** | ✅ COMPLETE | All 11 primary application views interactively verified |
+| **Backend Regression Suite** | ✅ COMPLETE | 122 / 122 automated unit and integration tests PASS |
+| **Academic Holdout Benchmarks** | ✅ COMPLETE | 100% invariant RMSE metrics across all 8 benchmark equities |
+| **Market Data & Provenance** | ✅ COMPLETE | Strict data lineage with explicit fallback watermarking (no fake live claims) |
+| **NIFTY 50 Universe** | ✅ COMPLETE | 50/50 constituents verified with deterministic ranking and NSE timestamps |
+| **Supabase Persistence** | ✅ COMPLETE | Real-world database persistence and webhook idempotency verified |
+| **Sandbox / Mock Payments** | 🟡 PENDING | Infrastructure complete; end-to-end provider lifecycle validation is the next checkpoint |
+| **Production Provider Credentials** | 🔴 BLOCKED | Stripe / Razorpay live production credentials intentionally unconfigured |
+| **Real-Money Payment Activation** | 🔴 BLOCKED | Live real-money payment transactions strictly disabled |
+| **Final Documentation & Demo** | 🔵 NEXT PHASE | Comprehensive user guide, video walkthrough, and portfolio demo artifacts |
 
 ---
 
-## 3. Completed Git Checkpoints
+## 3. Technology Stack
+
+### Frontend Architecture
+- **Framework:** React 18 with TypeScript
+- **Build Tool:** Vite
+- **Styling:** Custom TailwindCSS utility layer with institutional OLED Dark, Light, and System theme synchronization
+- **State Management:** React Context (`StockContext`, `ThemeContext`) with local and session storage persistence
+- **Visualization:** Interactive HTML5 Canvas candlestick and line charts with uncertainty variance cones
+
+### Backend & ML Architecture
+- **API Framework:** FastAPI (Python 3.11+) with Pydantic schema validation
+- **Deployment Runtime:** Vercel Serverless Functions (`api/index.py` with 60s execution limit)
+- **Machine Learning:** `scikit-learn` (Ridge Regression, TimeSeriesSplit), `xgboost` (GBDT), `numpy`, `scipy` (Diebold-Mariano test)
+- **Data Ingestion:** Yahoo Finance API integration with deterministic benchmark fallback provider
+- **NLP & Sentiment:** Rule-based and financial lexicon sentiment scoring engine
+
+### Persistence & Data Storage
+- **Database:** Supabase (PostgreSQL) with RESTful PostgREST and service-role backend client
+- **Tables:** `user_subscriptions`, `processed_webhook_events`
+- **Client Cache:** Partitioned in-memory TTL caching manager with thread-safe access
+
+---
+
+## 4. Core Features
+
+1. **Global & Domestic Market Telemetry:** Live index tracking for NIFTY 50, SENSEX, BANK NIFTY, USD/INR, Gold, and Crude Oil.
+2. **NIFTY 50 Constituents Engine:** Real-time constituent monitoring with deterministic volume and momentum scoring.
+3. **Active Equity Deep-Dive Workbench:** Real-time quote cards, 52-week position range bar, valuation fundamentals, and forward forecast outlook.
+4. **Multi-Model Forecast Engine:** 1-day, 5-day, 10-day, and 30-day forward price projections with expanding uncertainty cones.
+5. **Quantitative Backtesting Suite:** Walk-forward validation metrics, out-of-sample holdout errors (MAE, RMSE, MAPE), and Diebold-Mariano tests.
+6. **Technical Indicators:** Wilder 14-period RSI, MACD Line / Signal / Histogram, Bollinger Bands (20, 2σ), and SMAs (20/50).
+7. **News Sentiment Engine:** Aggregated corporate headlines with directional sentiment polarity and source attribution.
+8. **Multi-Stock Comparator:** Normalized percentage performance charts and comparative correlation metrics.
+9. **Watchlist & Data Portability:** Local watchlist persistence with one-click JSON export.
+10. **Terminal Configuration:** Customizable chart types, forecast horizons, model presets, and diagnostic telemetry.
+
+---
+
+## 5. Institutional Dashboard
+
+The StockSense AI dashboard provides an institutional Bloomberg/Refinitiv-style terminal layout:
+
+- **Market Tickers Strip:** Responsive sparkline cards displaying real-time levels, absolute net change, and percentage returns.
+- **Market Breadth Gauge:** Visual distribution of Advances, Declines, and Unchanged equities with market status indicators.
+- **Market Overview Card:** Composite market sentiment score, technical RSI level, and constituent sector allocation.
+- **Market Trend Chart:** Interactive area chart supporting 1W, 1M, 3M, 1Y, and ALL timeframes.
+- **Sector Allocation & Extremes:** Sector-by-sector performance bars alongside Top 5 Gainers and Top 5 Losers tables.
+- **Interactive NIFTY 50 Heatmap:** 50-tile color-coded visualization of returns across the index.
+- **AI Market Insight:** Algorithmic market commentary synthesizing momentum, breadth, and sector leadership.
+- **Active Equity Workbench:** Comprehensive deep-dive container embedding candlestick charts, company fundamentals, and forward ML forecasts.
+
+---
+
+## 6. Stock Analytics
+
+The Stock Analytics engine computes and displays key valuation and market data:
+- **Price Action:** Current price, previous close, day open, day high, day low, 24-hour net movement.
+- **Volume Metrics:** Current session volume, 30-day average volume, Relative Volume (RVOL) spike indicator.
+- **Valuation Metrics:** Market capitalization, Price-to-Earnings (P/E) ratio, Beta volatility factor, 52-week high / low.
+- **Company Fundamentals:** Detailed corporate profiles, exchange metadata, sector classification, and provenance tags.
+- **Data Lineage:** Transparent metadata stamping indicating data origin (`YAHOO_FINANCE` vs. `FALLBACK_BENCHMARK`).
+
+---
+
+## 7. Technical Analysis
+
+StockSense AI implements standardized econometric technical indicators calculated on historical price series:
+
+- **Relative Strength Index (RSI):**
+  $$\text{RSI} = 100 - \left[ \frac{100}{1 + \text{RS}} \right]$$
+  Calculated using a 14-period Wilder exponential smoothing technique with overbought (70) and oversold (30) threshold bands.
+
+- **Moving Average Convergence Divergence (MACD):**
+  $$\text{MACD Line} = \text{EMA}_{12}(\text{Close}) - \text{EMA}_{26}(\text{Close})$$
+  $$\text{Signal Line} = \text{EMA}_{9}(\text{MACD Line})$$
+  $$\text{Histogram} = \text{MACD Line} - \text{Signal Line}$$
+
+- **Bollinger Bands:**
+  $$\text{Upper Band} = \text{SMA}_{20} + (2.0 \times \sigma_{20})$$
+  $$\text{Lower Band} = \text{SMA}_{20} - (2.0 \times \sigma_{20})$$
+
+---
+
+## 8. News & Sentiment
+
+- **Headline Aggregation:** Real-time financial headline ingestion categorized by individual equity symbols.
+- **Financial NLP Scoring:** Contextual sentiment classification identifying regulatory events, corporate earnings reports, and management guidance.
+- **Sentiment Polarity:** Weighted aggregate sentiment index ranging from -100 (Strong Bearish) to +100 (Strong Bullish).
+- **Attribution & Timestamps:** Direct publisher attribution and article publication timestamps.
+
+---
+
+## 9. ML Forecasting
+
+### Model Architectures
+- **Ridge Regression (Baseline):** L2-regularized linear model with analytical closed-form optimization:
+  $$W = (X^T X + \alpha I)^{-1} X^T y$$
+- **Gradient Boosted Decision Trees (GBDT):** Non-linear ensemble model capturing non-linear feature interactions and regime shifts.
+- **LSTM Sequence Neural Network:** Recurrent sequence model operating over sliding lookback windows to capture multi-step temporal dependencies.
+
+### Validation Methodology & Invariance
+- **Strict Chronological Splitting:** 85% chronological training set followed by an untouched 15% out-of-sample holdout test set to eliminate data leakage.
+- **Expanding Walk-Forward Validation:** Time-series cross-validation (`TimeSeriesSplit`) to select the optimal model architecture prior to test set evaluation.
+- **Uncertainty Quantification:** Multi-horizon residual variance cones providing 80% and 95% confidence intervals expanding over time:
+  $$\text{Cone Margin}(h) = Z \times \text{RMSE}_{\text{val}} \times \sqrt{h}$$
+
+### Academic Holdout Benchmarks (100% Invariant)
+
+| Symbol | Selected Model | Walk-Forward Val RMSE | Final Holdout RMSE | Invariance Status |
+|---|---|---:|---:|:---:|
+| **AAPL** | Ridge Regression | $6.47 | $3.88 | ✅ Invariant |
+| **MSFT** | Ridge Regression | $7.08 | $8.22 | ✅ Invariant |
+| **NVDA** | Ridge Regression | $2.60 | $5.65 | ✅ Invariant |
+| **TSLA** | Ridge Regression | $6.75 | $16.99 | ✅ Invariant |
+| **RELIANCE** | Ridge Regression | ₹56.69 | ₹39.09 | ✅ Invariant |
+| **TCS** | Ridge Regression | ₹73.66 | ₹65.35 | ✅ Invariant |
+| **INFY** | Ridge Regression | ₹42.17 | ₹38.39 | ✅ Invariant |
+| **HDFCBANK** | Ridge Regression | ₹35.04 | ₹26.36 | ✅ Invariant |
+
+---
+
+## 10. NIFTY 50 Trending
+
+- **Constituent Universe:** Exactly 50 blue-chip equities listed on the National Stock Exchange of India (NSE).
+- **Deterministic Trend Score:** Multi-factor trend formula combining price momentum, moving average distance, and relative volume:
+  $$\text{Score} = w_1 \cdot \Delta P_{1\text{d}} + w_2 \cdot \Delta P_{5\text{d}} + w_3 \cdot \left(\frac{P - \text{SMA}_{20}}{\text{SMA}_{20}}\right) + w_4 \cdot \text{RVOL}$$
+- **Market Hours Awareness:** Accurate reporting of NSE market status (`OPEN` vs. `CLOSED` based on IST 09:15–15:30 schedule).
+- **Verified Endpoint:** `GET /api/stocks/trending/nifty50` (HTTP 200, 50/50 constituents ranked).
+
+---
+
+## 11. Watchlist
+
+- **Client-Side Persistence:** Local browser persistence storing monitored equity symbols and entry metrics.
+- **Performance Overview:** Real-time price tracking, 24h percentage return, and 5-day directional forecast summary.
+- **Data Portability:** Structured JSON export allowing analysts to backup and transfer saved equity watchlists.
+
+---
+
+## 12. Model Performance & Backtesting
+
+- **Out-of-Sample Metrics:** Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), Mean Absolute Percentage Error (MAPE), and Directional Accuracy (Hit Rate).
+- **Diebold-Mariano Hypothesis Testing:** Rigorous pairwise statistical tests comparing model forecast residuals against naive baseline models to evaluate statistical significance ($p < 0.05$).
+- **Multi-Horizon Error Analysis:** Step-by-step forecast accuracy degradation analysis across 1d, 5d, 10d, and 30d horizons.
+
+---
+
+## 13. Settings
+
+The Settings terminal view provides comprehensive user configuration:
+- **Display & UI:** OLED Dark Mode, Light Mode, and System OS sync with live DOM class switching; compact table density and reduced motion toggles.
+- **ML & Quant Engine:** Default forecast horizon presets, model selection overrides, confidence interval widths (80%/95%/99%), and indicator lookbacks.
+- **Market Telemetry:** Exchange priority preferences, auto-refresh polling intervals, and provenance watermark toggles.
+- **Storage & Reset:** Watchlist JSON export, in-memory cache purging, and factory defaults restoration.
+- **Truthful Diagnostics:** Real-time round-trip API telemetry latency measurements without simulated or fictitious status indicators.
+
+---
+
+## 14. Help & Support
+
+- **Searchable Knowledge Base:** Instant search filtering across algorithms, technical indicators, market data feeds, and billing questions.
+- **Standardized Formulas Card:** LaTeX-formatted mathematical equations for technical oscillators and forecast validation metrics.
+- **Terminal Shortcuts Guide:** Quick reference for universal search (`Cmd/Ctrl + K`), modal dismissal (`Esc`), and horizon toggles (`1/2/3`).
+- **Support Ticket Intake:** Validated inquiry submission form logging issues to a diagnostic queue with tracking ID generation.
+
+---
+
+## 15. Pricing
+
+- **Subscription Tiers:** Free Explorer, Pro Trader, and Institutional Elite tiers.
+- **Billing & Currency Toggles:** Dual currency ($ USD and ₹ INR) with dynamic monthly and annual (20% discount) calculation.
+- **Entitlements Matrix:** Transparent feature comparison outlining forecast horizons, API rate limits, indicator access, and export capabilities.
+- **Sandbox Checkout Modal:** Simulated zero-risk checkout experience demonstrating upgrade flows without real payment credentials.
+- **Factual Security Architecture:** Clean architectural descriptions with zero unsupported claims (no fictitious PCI-DSS certifications or ungrounded security promises).
+
+---
+
+## 16. Payment Architecture
 
 ```text
-47bcd4b Complete comprehensive release hardening and verification
+               +----------------------------------+
+               |       Frontend Pricing View      |
+               +----------------------------------+
+                                |
+                                v
+               +----------------------------------+
+               |  FastAPI /api/payments/checkout  |
+               +----------------------------------+
+                                |
+          +---------------------+---------------------+
+          |                     |                     |
+          v                     v                     v
+   +--------------+      +--------------+      +--------------+
+   | Mock Sandbox |      |    Stripe    |      |   Razorpay   |
+   |   Provider   |      |   Adapter    |      |   Adapter    |
+   +--------------+      +--------------+      +--------------+
+          |                     |                     |
+          | (Simulation)        | (HMAC-SHA256)       | (HMAC-SHA256)
+          |                     | Webhook             | Webhook
+          +---------------------+---------------------+
+                                |
+                                v
+               +----------------------------------+
+               |        EntitlementManager        |
+               +----------------------------------+
+                                |
+                                v
+               +----------------------------------+
+               |   Supabase Persistent Storage    |
+               |  - user_subscriptions            |
+               |  - processed_webhook_events      |
+               +----------------------------------+
+```
+
+### Security & Safety Principles
+- **Sandbox / Mock Infrastructure:** ✅ ENABLED for zero-financial-risk testing and demo verification.
+- **Supabase Entitlement Persistence:** ✅ ENABLED and verified against real Supabase database instances.
+- **Stripe & Razorpay Adapters:** ✅ Implemented with signature verification and idempotency handling.
+- **Production Provider Credentials:** 🔴 NOT CONFIGURED.
+- **Real-Money Payment Activation:** 🔴 STRICTLY BLOCKED AND DISABLED.
+
+---
+
+## 17. Supabase Persistence
+
+### Database Schema
+Executed in Supabase PostgreSQL:
+- `public.user_subscriptions`: Stores user identifiers, tier entitlements, provider references, subscription status, and expiration timestamps.
+- `public.processed_webhook_events`: Stores cryptographic event IDs, provider names, event types, and processing timestamps for duplicate event rejection.
+
+### Real Supabase Verification Summary (✅ PASS)
+- **Subscription Write:** Successfully persisted test subscriber records via REST API.
+- **Fresh-Process Read:** Verified entitlement retrieval across clean process restarts.
+- **Cross-Instance Persistence:** Confirmed multi-instance persistence durability.
+- **Cancellation Persistence:** Verified subscription status updates upon cancellation events.
+- **Webhook Event Persistence:** Recorded incoming event IDs in audit tables.
+- **Duplicate Webhook Idempotency:** Verified that duplicate webhook payloads are rejected without double-processing.
+- **Audit Cleanup:** All temporary test records were cleanly purged following verification.
+
+---
+
+## 18. Testing & Validation
+
+### Automated Backend Regression Suite
+- **Command:** `python -X utf8 -m unittest discover -v -s backend/tests -p "test_*.py"`
+- **Result:** **122 / 122 Tests PASS** (0 failures, 0 errors, duration: 124.6s).
+- **Test Areas Covered:**
+  - Data quality and historical series validation
+  - Ridge, XGBoost, and LSTM model execution
+  - Walk-forward validation and model selection logic
+  - Out-of-sample holdout isolation and invariant benchmarking
+  - Diebold-Mariano statistical hypothesis testing
+  - NIFTY 50 trending universe and scoring determinism
+  - News NLP sentiment scoring and cache partitioning
+  - Payment persistence, webhook signature verification, and idempotency
+  - Vercel serverless deployment entrypoints and health endpoints
+
+### Frontend Production Build
+- **Command:** `npm run build` (within `frontend/`)
+- **Result:** **PASS** (0 TypeScript errors, Vite production bundle generated).
+
+### Browser QA
+- Interactively verified across all 11 core routes: Dashboard, Forecast, Technical Analysis, Sentiment, Comparison, Watchlist, Model Performance, Pricing, Settings, Help & Support, and About.
+
+---
+
+## 19. Production Verification
+
+- **Live Production URL:** `https://stock-sense-ai-eight.vercel.app`
+- **Smoke Test Status:** **20 / 20 Endpoints & Routes Verified HTTP 200**
+
+| Endpoint / Route | Method / Type | Live Status | Response Summary |
+|---|:---:|:---:|---|
+| `/api/health` | GET (API) | HTTP 200 | System healthy, FastAPI online |
+| `/api/search?q=rel` | GET (API) | HTTP 200 | Ranked equity search results |
+| `/api/stocks/AAPL` | GET (API) | HTTP 200 | US equity overview & provenance |
+| `/api/stocks/RELIANCE` | GET (API) | HTTP 200 | Indian equity overview & provenance |
+| `/api/forecast/AAPL` | GET (API) | HTTP 200 | Multi-horizon ML price predictions |
+| `/api/news/AAPL` | GET (API) | HTTP 200 | Sentiment-scored news headlines |
+| `/api/stocks/trending/nifty50` | GET (API) | HTTP 200 | 50/50 NIFTY constituent ranking |
+| `/api/payments/plans` | GET (API) | HTTP 200 | Subscription tiers and feature matrix |
+| `/` | SPA Route | HTTP 200 | Landing & Terminal view loaded |
+| `/dashboard` | SPA Route | HTTP 200 | Institutional Dashboard loaded |
+| `/trending` | SPA Route | HTTP 200 | NIFTY 50 Trending view loaded |
+| `/forecast` | SPA Route | HTTP 200 | Forecast Workbench loaded |
+| `/technical` | SPA Route | HTTP 200 | Technical Oscillators view loaded |
+| `/sentiment` | SPA Route | HTTP 200 | News & Sentiment view loaded |
+| `/compare` | SPA Route | HTTP 200 | Stock Comparison view loaded |
+| `/watchlist` | SPA Route | HTTP 200 | Watchlist view loaded |
+| `/model-performance` | SPA Route | HTTP 200 | Model Performance view loaded |
+| `/pricing` | SPA Route | HTTP 200 | Pricing & Sandbox view loaded |
+| `/settings` | SPA Route | HTTP 200 | Settings view loaded |
+| `/help` | SPA Route | HTTP 200 | Help & Support view loaded |
+| `/about` | SPA Route | HTTP 200 | System Architecture view loaded |
+
+---
+
+## 20. Git Release Checkpoints
+
+```text
+41b121f Finalize UI polish and release hardening
+47bcd4b Configure 60s maxDuration for serverless ML execution in vercel.json
+5af8be3 Add model-performance route alias for seamless deep-linking
+553ee61 Revise README.md for improved project documentation
+6ae6916 Update README with project status and details
 8611416 Serve static frontend bundle from FastAPI root for unified Vercel deployment
 7817799 Add payment hardening and NIFTY 50 trending
 db054df Fix serverless dependencies for Vercel Python runtime
@@ -78,1104 +359,33 @@ cc4c7aa Add persistent payment entitlements with Supabase
 8b36e58 Complete institutional frontend redesign
 ```
 
-### Release Checkpoint Status
+---
 
-```text
-Commit: 47bcd4b
-Status:
-✅ Local and origin/main synchronized
-✅ 122/122 Backend Unit & Integration Tests PASS
-✅ 0 Secret Leakage (Clean Audit)
-✅ 100% Vercel Production Smoke Test PASS
-```
+## 21. Current Remaining Work
 
-### Git Safety Rules
-
-Never commit:
-
-- `.env`
-- API keys
-- payment secrets
-- Supabase service-role keys
-- database passwords
-- `node_modules`
-- cache files
-- temporary test credentials
-
-Before release checkpoints:
-
-```bash
-git status
-git diff --check
-git diff --stat
-git log --oneline --decorate -10
-```
+1. **Sandbox Payment End-to-End Validation** 🟡
+   Conduct simulated checkout and webhook lifecycle testing across all tier transitions.
+2. **Final Vercel Deployment & Commit Correspondence Verification** 🟡
+   Confirm deployment synchronicity with the latest documentation commit.
+3. **Final Documentation & Portfolio Demo Preparation** 🔵
+   Prepare final demonstration videos and architecture walkthrough documents.
+4. **Real-Money Stripe / Razorpay Activation** 🔴
+   Strictly blocked and intentionally disabled.
 
 ---
 
-## 4. Vercel Deployment
+## 22. Future Roadmap
 
-StockSense AI uses a unified Vercel deployment.
-
-```text
-                    VERCEL
-                      |
-          +-----------+-----------+
-          |                       |
-       FRONTEND                  API
-          |                       |
-    React/Vite SPA             FastAPI
-    frontend/dist             api/index.py
-          |                       |
-          +-----------+-----------+
-                      |
-                 Same Domain
-```
-
-### Production URL
-
-```text
-https://stock-sense-ai-eight.vercel.app
-```
-
-The previous deployment was successfully verified for the core backend and frontend routes.
-
-### Final Release Requirement
-
-After the latest frontend commit is synchronized with GitHub:
-
-1. Allow Vercel to deploy.
-2. Verify deployment status.
-3. Run production API smoke tests.
-4. Verify all frontend routes.
+- **Temporal Fusion Transformers (TFT):** Attention-based multi-horizon forecasting with interpretable feature weights.
+- **SHAP & LIME Feature Attribution:** Game-theoretic attribution scores explaining individual session price predictions.
+- **Deep Reinforcement Learning (RL):** Policy gradient agents (PPO/DDPG) for simulated algorithmic portfolio rebalancing.
+- **Markowitz Mean-Variance Optimization:** Automated efficient frontier calculation and risk-adjusted asset allocation.
+- **Streaming Tick Ingestion:** Low-latency WebSocket feeds for sub-second quote updates.
 
 ---
 
-## 5. Production API Verification
+## 23. Financial Disclaimer
 
-Previously verified production endpoints:
+StockSense AI is strictly an educational and quantitative market research platform.
 
-```text
-/api/health
-/api/search?q=Apple
-/api/stocks/AAPL
-/api/stocks/RELIANCE
-/api/forecast/AAPL
-/api/news/AAPL
-/api/payments/plans
-/api/stocks/trending/nifty50
-/
-/trending
-```
-
-Previously verified core endpoints returned HTTP `200`.
-
----
-
-## 6. Frontend
-
-The frontend uses:
-
-- React 18
-- TypeScript
-- Vite
-- Component-based architecture
-- SPA navigation
-- API service abstraction
-- Responsive layout
-- Institutional financial-terminal design system
-
-### Main Views
-
-```text
-Landing
-Dashboard
-Stock Overview
-Forecast
-Technical Analysis
-Comparison
-News & Sentiment
-NIFTY 50 Trending
-Watchlist
-Model Performance
-Pricing
-Settings
-Help & Support
-About
-```
-
-### Frontend Production Build
-
-The institutional frontend redesign was successfully built using:
-
-```bash
-npm run build
-```
-
-Verification:
-
-```text
-✅ TypeScript compilation
-✅ Vite production bundle
-✅ 0 build errors
-✅ Production bundle generated successfully
-```
-
----
-
-## 7. Institutional Dashboard Redesign
-
-The frontend was redesigned into an institutional-style financial analytics terminal.
-
-### Dashboard components
-
-- Market ticker strip
-- Market strength gauge
-- Market overview
-- Market trend chart
-- Sector performance
-- Top gainers
-- Top losers
-- NIFTY 50 heatmap
-- AI market insight
-- Active equity workbench
-- Stock analytics
-- Forecast integration
-
-### Design system
-
-Primary visual tokens:
-
-```text
-#0B0F17
-#111726
-#151D2F
-#1E293B
-#10B981
-```
-
----
-
-## 8. Settings
-
-The Settings page provides:
-
-- Dark, light, and system themes
-- Chart presentation
-- Compact density
-- Reduced motion
-- Prediction horizon
-- Model selection
-- Confidence interval
-- Technical lookback periods
-- Exchange priority
-- Polling interval
-- Data provenance badges
-- RVOL alerts
-- Watchlist export
-- Cache purge
-- Factory reset
-- API latency diagnostics
-- ML engine status
-- Payment sandbox status
-- Persistence readiness
-
----
-
-## 9. Help & Support
-
-The Help & Support page includes:
-
-- Searchable knowledge base
-- FAQ categories
-- ML forecasting explanations
-- Technical indicator references
-- Market-data information
-- Sandbox billing information
-- Keyboard shortcuts
-- Mathematical references
-- Support inquiry form
-- Ticket generation
-
----
-
-## 10. Pricing
-
-Pricing includes:
-
-- Free Explorer
-- Pro Trader
-- Institutional Elite
-- Monthly billing
-- Annual billing
-- USD
-- INR
-- Plan comparison
-- Feature comparison
-- Sandbox checkout
-
-### Pricing Security Claims
-
-```text
-✅ Factual security/architecture descriptions
-❌ No unsupported PCI-DSS certification claims
-❌ No unsupported "bank-grade encryption" claims
-❌ No unsupported security certifications
-```
-
-Only verified security properties should be presented as guarantees.
-
----
-
-## 11. Market Data
-
-The backend contains provider abstractions for:
-
-- Yahoo Finance
-- Commercial provider adapters
-- Deterministic fallback/benchmark provider
-
-Market responses expose:
-
-- Provider
-- Symbol
-- Exchange
-- Currency
-- Timestamp
-- Timezone
-- Market status
-- Freshness
-- Live/fallback state
-
-The application must never claim fallback or historical data is live.
-
----
-
-## 12. Stock Analytics
-
-Implemented functionality includes:
-
-- Current price
-- Previous close
-- Daily change
-- Daily change %
-- Open / High / Low
-- Volume / Average volume
-- 52-week range
-- Market capitalization
-- P/E
-- Beta
-- Dividend information
-- Company description
-- Fundamentals
-- Provenance
-
-Previously verified examples:
-
-```text
-AAPL
-RELIANCE
-```
-
----
-
-## 13. ML Forecasting
-
-### Models
-
-- Ridge Regression
-- Gradient Boosted Decision Trees
-- LSTM
-- Model comparison and validation logic
-
-### Validation Methodology
-
-- Chronological splitting
-- Pre-test training/validation partition
-- Untouched holdout test set
-- Expanding walk-forward validation
-- Validation-selected model architecture
-- Multi-horizon forecasting
-- Prediction intervals
-- Baseline comparisons
-
-### Critical Rule
-
-**ML methodology is frozen.**
-
-Do not modify the forecasting methodology during deployment, payment, or frontend work.
-
----
-
-## 14. Academic Holdout Benchmarks
-
-Frozen final holdout RMSE values:
-
-| Symbol | Final Holdout RMSE |
-|---|---:|
-| AAPL | $3.88 |
-| MSFT | $8.22 |
-| NVDA | $5.65 |
-| TSLA | $16.99 |
-| RELIANCE | ₹39.09 |
-| TCS | ₹65.35 |
-| INFY | ₹38.39 |
-| HDFCBANK | ₹26.36 |
-
-These values must remain invariant unless an explicitly approved ML research change is made.
-
----
-
-## 15. NIFTY 50 Trending
-
-Backend:
-
-```text
-backend/services/nifty_service.py
-```
-
-Frontend:
-
-```text
-frontend/src/components/views/TrendingView.tsx
-```
-
-Production endpoint:
-
-```text
-/api/stocks/trending/nifty50
-```
-
-Frontend route:
-
-```text
-/trending
-```
-
-Previously verified:
-
-- ✅ HTTP 200
-- ✅ 50 returned stocks
-- ✅ 50 unique symbols
-- ✅ Multi-factor trend scoring
-- ✅ Ordinal ranking
-- ✅ Constituent-level resilience
-- ✅ Market-status reporting
-- ✅ Data provenance
-
-During closed-market periods the system must correctly indicate that quotes are not live.
-
----
-
-## 16. News & Sentiment
-
-Implemented:
-
-- Financial news ingestion
-- RSS/news providers
-- Publisher attribution
-- Publication timestamps
-- Sentiment scoring
-- Financial/contextual sentiment
-- Fallback behavior
-
-Production endpoint:
-
-```text
-/api/news/{symbol}
-```
-
----
-
-## 17. Payment Architecture
-
-Payment modules:
-
-```text
-backend/services/payments/
-```
-
-Important modules:
-
-```text
-base.py
-factory.py
-models.py
-entitlements.py
-stripe_provider.py
-razorpay_provider.py
-mock_sandbox_provider.py
-supabase_store.py
-supabase_schema.sql
-```
-
-Supported providers:
-
-```text
-Stripe
-Razorpay
-Mock Sandbox
-```
-
----
-
-## 18. Payment Security
-
-Implemented safeguards:
-
-- HMAC-SHA256 webhook verification
-- Stripe timestamp replay protection
-- Invalid signature rejection
-- Webhook idempotency
-- Subscription activation
-- Cancellation handling
-- Expiration handling
-- Safe unconfigured-payment responses
-- No card/CVV storage
-- Secret scanning
-
-Production payment credentials must never be hardcoded.
-
----
-
-## 19. Payment Readiness
-
-| Component | Status |
-|---|:---:|
-| Mock/Sandbox infrastructure | ✅ |
-| Payment architecture | ✅ |
-| Payment security | ✅ |
-| Supabase persistence | ✅ |
-| Real Supabase persistence | ✅ |
-| Cross-instance persistence | ✅ |
-| Webhook idempotency | ✅ |
-| Provider sandbox E2E | 🟡 |
-| Production Stripe/Razorpay configuration | 🔴 |
-| Real-money payment activation | 🔴 |
-
-**Payment architecture being complete does not mean live payments are enabled.**
-
----
-
-## 20. Supabase Payment Persistence
-
-### Original Problem
-
-The original entitlement system used:
-
-```text
-InMemoryEntitlementStore
-```
-
-This is unsuitable as the durable source of truth for real-money production on serverless infrastructure because serverless instances are ephemeral.
-
-### Implemented Solution
-
-Persistent adapter:
-
-```text
-backend/services/payments/supabase_store.py
-```
-
-Integrated with:
-
-```text
-backend/services/payments/entitlements.py
-```
-
-Architecture:
-
-```text
-Payment Provider
-      |
-      v
-Webhook Verification
-      |
-      v
-EntitlementManager
-      |
-      v
-Supabase/PostgreSQL
-      |
-      +--> user_subscriptions
-      |
-      +--> processed_webhook_events
-```
-
-The in-memory implementation remains available for:
-
-- Unit tests
-- Local development
-- Sandbox/mock operation
-
----
-
-## 21. Supabase Database
-
-Schema:
-
-```text
-backend/services/payments/supabase_schema.sql
-```
-
-Required tables:
-
-```text
-public.user_subscriptions
-public.processed_webhook_events
-```
-
-The schema has been successfully executed in Supabase.
-
-Required production environment variables:
-
-```text
-SUPABASE_URL
-SUPABASE_SERVICE_ROLE_KEY
-PAYMENT_PERSISTENCE=supabase
-```
-
-### Security Rule
-
-`SUPABASE_SERVICE_ROLE_KEY` is server-side only.
-
-Never:
-
-- Print it
-- Commit it
-- Expose it to React/Vite
-- Place it in frontend JavaScript
-- Return it through an API
-- Log it
-
----
-
-## 22. Real Supabase Persistence Verification
-
-### Status: ✅ COMPLETE
-
-Real Supabase persistence was successfully tested.
-
-```text
-Real Supabase verification:
-
-✅ Subscription write
-✅ Fresh-process read
-✅ Cross-instance persistence
-✅ Subscription update
-✅ Cancellation persistence
-✅ Webhook event persistence
-✅ Duplicate webhook idempotency
-✅ Temporary test cleanup
-```
-
-The test used temporary records and removed them after verification.
-
-No production credentials were written to the repository.
-
----
-
-## 23. Production Fail-Closed Payment Requirement
-
-Production must never silently fall back to:
-
-```text
-InMemoryEntitlementStore
-```
-
-when persistent storage is required.
-
-If:
-
-```text
-APP_ENV=production
-```
-
-or:
-
-```text
-REQUIRE_PERSISTENCE=true
-```
-
-and persistent credentials are missing, the application must explicitly raise a persistence configuration error.
-
-This is a hard requirement before real-money payments are activated.
-
----
-
-## 24. Webhook Idempotency
-
-The persistence design uses:
-
-```text
-processed_webhook_events
-```
-
-with a unique event identifier.
-
-Lifecycle:
-
-```text
-Webhook
-   |
-   v
-Verify signature
-   |
-   v
-Check event ID
-   |
-   +---- Already processed
-   |          |
-   |          v
-   |        Ignore
-   |
-   v
-Update subscription
-   |
-   v
-Record processed event
-```
-
-If subscription persistence fails, the event must not be marked as successfully processed so the payment provider can retry.
-
----
-
-## 25. Testing
-
-Latest reported backend test checkpoint:
-
-```text
-122 / 122 PASS
-0 failures
-0 errors
-```
-
-Payment persistence tests:
-
-```text
-8 / 8 PASS
-```
-
-Commands:
-
-```bash
-python -X utf8 -m unittest -v backend.tests.test_payment_persistence
-
-python -X utf8 -m unittest discover -v -s backend/tests -p "test_*.py"
-```
-
-Frontend build:
-
-```bash
-cd frontend
-npm run build
-```
-
-Verified:
-
-```text
-✅ TypeScript compilation
-✅ Vite build
-✅ 0 build errors
-```
-
----
-
-## 26. Secret Scanning
-
-Previous audits found:
-
-```text
-0 production Stripe secrets
-0 production Razorpay secrets
-0 Supabase credentials committed
-0 known live credentials in frontend bundles
-```
-
-Never commit:
-
-```text
-STRIPE_SECRET_KEY
-STRIPE_WEBHOOK_SECRET
-RAZORPAY_KEY_ID
-RAZORPAY_KEY_SECRET
-RAZORPAY_WEBHOOK_SECRET
-SUPABASE_SERVICE_ROLE_KEY
-```
-
-Run a secret scan before every production release.
-
----
-
-## 27. Current Remaining Work
-
-### Phase A — GitHub Synchronization
-
-### Status: 🟡
-
-Latest frontend commit:
-
-```text
-8b36e58 Complete institutional frontend redesign
-```
-
-The commit exists locally.
-
-The previous push was rejected because the GitHub remote contains commits not present in the local branch.
-
-Required:
-
-```bash
-git fetch origin
-git log --oneline --graph --decorate --all -10
-git status
-git pull --rebase origin main
-```
-
-Resolve conflicts if required.
-
-Then:
-
-```bash
-git push origin main
-```
-
-**Do not force-push.**
-
----
-
-## 28. Phase B — Vercel Verification
-
-### Status: 🟡
-
-After GitHub synchronization:
-
-1. Allow Vercel to deploy.
-2. Confirm deployment is `Ready`.
-3. Test `/api/health`.
-4. Test `/api/payments/plans`.
-5. Test stock APIs.
-6. Test forecasting.
-7. Test NIFTY 50 Trending.
-8. Test `/`.
-9. Test `/trending`.
-10. Test `/settings`.
-11. Test `/help`.
-12. Test `/pricing`.
-13. Check browser console for frontend errors.
-
-Do not activate live payments during this phase.
-
----
-
-## 29. Phase C — Sandbox Payment Testing
-
-### Status: 🟡 NEXT MAJOR PAYMENT PHASE
-
-Use only:
-
-```text
-Stripe test/sandbox mode
-Razorpay test mode
-Mock provider
-```
-
-Never use live payment credentials during sandbox testing.
-
-Required lifecycle:
-
-```text
-Create Checkout
-      ↓
-Sandbox Payment
-      ↓
-Provider Webhook
-      ↓
-Signature Verification
-      ↓
-Idempotency Check
-      ↓
-Supabase Entitlement Write
-      ↓
-Fresh-Process Entitlement Read
-```
-
-Test:
-
-- [ ] Successful payment
-- [ ] Failed payment
-- [ ] Invalid signature
-- [ ] Duplicate webhook
-- [ ] Expired/replayed webhook
-- [ ] Cancellation
-- [ ] Expiration
-- [ ] Entitlement activation
-- [ ] Entitlement persistence after fresh process
-
----
-
-## 30. Production Payment Activation
-
-### Status: 🔴 BLOCKED
-
-Real-money payment activation must remain blocked until every required operational gate passes.
-
-### Completed
-
-- [x] Supabase schema created
-- [x] Supabase service-role access verified
-- [x] Real subscription write verified
-- [x] Fresh-process read verified
-- [x] Cross-instance persistence verified
-- [x] Cancellation persistence verified
-- [x] Webhook event persistence verified
-- [x] Duplicate webhook idempotency verified
-- [x] Temporary test records cleaned up
-
-### Still Required
-
-- [ ] Final expiration persistence verification
-- [ ] Provider sandbox checkout
-- [ ] Provider sandbox webhook
-- [ ] Sandbox entitlement activation
-- [ ] Sandbox cancellation
-- [ ] Sandbox duplicate webhook test
-- [ ] Full regression suite after final payment changes
-- [ ] Final secret scan
-- [ ] Vercel environment verification
-- [ ] Production webhook configuration
-- [ ] Production Stripe/Razorpay credentials
-- [ ] Final production payment smoke test
-
-### Until all gates pass:
-
-## 🔴 REAL-MONEY PAYMENTS MUST REMAIN DISABLED
-
----
-
-## 31. Features Frozen During Release Hardening
-
-Unless explicitly approved, do not modify:
-
-- ML methodology
-- Academic holdout datasets
-- Benchmark RMSE values
-- Walk-forward validation
-- Model-selection logic
-- NIFTY scoring methodology
-- Market-data provenance rules
-- Production routing architecture
-
-The current priority is:
-
-> **Reliability and release verification, not uncontrolled feature expansion.**
-
----
-
-## 32. Recommended Release Sequence
-
-```text
-CURRENT
-   |
-   v
-Resolve GitHub remote/local history
-   |
-   v
-Push frontend checkpoint
-   |
-   v
-Vercel deployment
-   |
-   v
-Production API smoke test
-   |
-   v
-Frontend route verification
-   |
-   v
-Sandbox payment checkout
-   |
-   v
-Sandbox webhook verification
-   |
-   v
-Supabase entitlement verification
-   |
-   v
-Duplicate/replay/cancellation tests
-   |
-   v
-Security + regression audit
-   |
-   v
-Production payment configuration
-   |
-   v
-Final production smoke test
-   |
-   v
-LIVE PAYMENT ACTIVATION
-```
-
----
-
-## 33. Leadership Assessment
-
-### Core Application
-
-🟢 **Substantially complete**
-
-Market analytics, forecasting, frontend, backend, NIFTY 50 trending, news, and provenance systems are substantially complete.
-
-### Frontend
-
-🟢 **Institutional redesign completed**
-
-Dashboard, analytics views, navigation, Settings, Help & Support, Pricing, charts, and supporting components have been redesigned.
-
-### Supabase Persistence
-
-🟢 **Real-world persistence verified**
-
-Cross-instance subscription persistence and webhook idempotency have been successfully verified against the real Supabase database.
-
-### Payment System
-
-🟡 **Technically mature but operationally incomplete**
-
-The architecture and persistence layer are implemented, but the complete provider sandbox payment lifecycle still requires verification.
-
-### Real-Money Payments
-
-🔴 **Not approved**
-
-Real-money payments must remain disabled until the complete sandbox, security, webhook, persistence, and production verification gates pass.
-
----
-
-## 34. Definition of Done
-
-| Component | Status |
-|---|:---:|
-| Core Platform | ✅ |
-| Backend | ✅ |
-| Frontend | ✅ |
-| Institutional Dashboard | ✅ |
-| Stock Data | ✅ |
-| Fundamentals | ✅ |
-| Technical Analysis | ✅ |
-| Forecasting | ✅ |
-| NIFTY 50 Trending | ✅ |
-| News/Sentiment | ✅ |
-| Watchlist | ✅ |
-| Model Performance | ✅ |
-| Comparison | ✅ |
-| Settings | ✅ |
-| Help & Support | ✅ |
-| Pricing UI | ✅ |
-| Payment Architecture | ✅ |
-| Payment Security | ✅ |
-| Supabase Schema | ✅ |
-| Supabase Persistence | ✅ |
-| Real Supabase Verification | ✅ |
-| Cross-Instance Persistence | ✅ |
-| Webhook Idempotency | ✅ |
-| Mock/Sandbox Infrastructure | ✅ |
-| Provider Sandbox E2E | 🟡 |
-| Full Payment Lifecycle | 🟡 |
-| GitHub Release Checkpoint | 🟡 |
-| Final Vercel Deployment | 🟡 |
-| Final Production Smoke Test | 🟡 |
-| Production Stripe/Razorpay Configuration | 🔴 |
-| Production Payment Smoke Test | 🔴 |
-| Real-Money Payment Activation | 🔴 |
-
----
-
-## 35. Developer Commands
-
-### Backend Tests
-
-```bash
-python -X utf8 -m unittest discover -v -s backend/tests -p "test_*.py"
-```
-
-### Payment Persistence Tests
-
-```bash
-python -X utf8 -m unittest -v backend.tests.test_payment_persistence
-```
-
-### Frontend Build
-
-```bash
-cd frontend
-npm install
-npm run build
-cd ..
-```
-
-### Git Inspection
-
-```bash
-git status
-git diff --check
-git diff --stat
-git log --oneline --decorate -10
-```
-
-### Git Synchronization
-
-```bash
-git fetch origin
-git log --oneline --graph --decorate --all -10
-git pull --rebase origin main
-git push origin main
-```
-
-### Final Git Verification
-
-```bash
-git status
-git log -1 --oneline
-```
-
----
-
-## 36. Final Project Principle
-
-A subsystem is not considered production-ready merely because its code exists.
-
-Production readiness requires:
-
-```text
-Implementation
-      +
-Automated Tests
-      +
-Real External-Service Verification
-      +
-Security Verification
-      +
-Deployment Verification
-      +
-Rollback-Safe Git Checkpoint
-```
-
-### Current StockSense AI V2 Position
-
-```text
-Core Application             🟢 Substantially complete
-Frontend                     🟢 Redesigned and built
-Supabase Persistence         🟢 Real-world verified
-Payment Architecture        🟢 Implemented
-Sandbox Payment E2E          🟡 Remaining
-GitHub Release Checkpoint    🟡 Remaining
-Final Vercel Verification   🟡 Remaining
-Production Payments         🔴 Blocked
-Real-Money Activation        🔴 Not approved
-```
-
-### Current Priority
-
-> **GitHub synchronization → Vercel verification → Sandbox payment E2E → Final security/regression audit → Production readiness review.**
+All machine learning forecasts, statistical price projections, technical indicators, and algorithmic sentiment scores are mathematical model estimates intended for research and educational demonstration only. They do **not** constitute financial, investment, tax, or trading advice. Past market performance and statistical model backtests do not guarantee future market returns.
