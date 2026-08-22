@@ -6,7 +6,7 @@
 **Repository:** `naikwadesharvil/StockSense_AI`
 **Production URL:** `https://stock-sense-ai-eight.vercel.app`
 
-> **Current Status:** 🟡 Release Candidate / Final Product Validation
+> **Current Status:** 🟢 Production Hardened / Release Candidate
 
 ---
 
@@ -34,15 +34,15 @@ The platform provides a comprehensive suite of market intelligence capabilities:
 | **Core Application & Backend** | ✅ COMPLETE | FastAPI serverless runtime deployed and smoke-tested |
 | **Frontend UI / UX** | ✅ COMPLETE | Institutional terminal interface, production-built (`npm run build` PASS) |
 | **Browser QA** | ✅ COMPLETE | All 11 primary application views interactively verified |
-| **Backend Regression Suite** | ✅ COMPLETE | 122 / 122 automated unit and integration tests PASS |
+| **Backend Regression Suite** | ✅ COMPLETE | 127 / 127 automated unit and integration tests PASS |
 | **Academic Holdout Benchmarks** | ✅ COMPLETE | 100% invariant RMSE metrics across all 8 benchmark equities |
 | **Market Data & Provenance** | ✅ COMPLETE | Strict data lineage with explicit fallback watermarking (no fake live claims) |
 | **NIFTY 50 Universe** | ✅ COMPLETE | 50/50 constituents verified with deterministic ranking and NSE timestamps |
-| **Supabase Persistence** | ✅ COMPLETE | Real-world database persistence and webhook idempotency verified |
-| **Sandbox / Mock Payments** | 🟡 PENDING | Infrastructure complete; end-to-end provider lifecycle validation is the next checkpoint |
+| **Supabase Persistence** | ✅ COMPLETE | Real-world database persistence and webhook idempotency verified (8/8 tests PASS) |
+| **Sandbox / Mock Payments** | ✅ COMPLETE | End-to-end checkout, webhook lifecycle, and entitlement upgrades verified |
+| **Payment Infrastructure Hardening** | ✅ COMPLETE | Timezone-safe expiration, payload safety, cancellation API, and surgical teardown verified |
 | **Production Provider Credentials** | 🔴 BLOCKED | Stripe / Razorpay live production credentials intentionally unconfigured |
 | **Real-Money Payment Activation** | 🔴 BLOCKED | Live real-money payment transactions strictly disabled |
-| **Final Documentation & Demo** | 🔵 NEXT PHASE | Comprehensive user guide, video walkthrough, and portfolio demo artifacts |
 
 ---
 
@@ -260,12 +260,24 @@ The Settings terminal view provides comprehensive user configuration:
                +----------------------------------+
 ```
 
-### Security & Safety Principles
-- **Sandbox / Mock Infrastructure:** ✅ ENABLED for zero-financial-risk testing and demo verification.
-- **Supabase Entitlement Persistence:** ✅ ENABLED and verified against real Supabase database instances.
-- **Stripe & Razorpay Adapters:** ✅ Implemented with signature verification and idempotency handling.
-- **Production Provider Credentials:** 🔴 NOT CONFIGURED.
-- **Real-Money Payment Activation:** 🔴 STRICTLY BLOCKED AND DISABLED.
+### Provider Gate & Lifecycle Status
+- **Sandbox / Mock Provider:** 🟢 **VERIFIED** — Zero-financial-risk simulated checkout, mock webhook processing, and tier entitlement upgrades.
+- **Supabase Persistence:** 🟢 **VERIFIED** — PostgreSQL persistence across independent serverless invocations and clean process restarts.
+- **Webhook Verification & Idempotency:** 🟢 **VERIFIED** — HMAC signature verification and deduplication via `processed_webhook_events`.
+- **Stripe Live Adapter:** 🔴 **DISABLED** — Real-money credentials intentionally unconfigured; safe fallback to `PAYMENTS_NOT_CONFIGURED`.
+- **Razorpay Live Adapter:** 🔴 **DISABLED** — Real-money credentials intentionally unconfigured; safe fallback to `PAYMENTS_NOT_CONFIGURED`.
+- **Real-Money Activation:** 🔴 **STRICTLY BLOCKED** — Real financial transactions are completely disabled.
+
+### Payment Infrastructure Hardening
+The payment subsystem has undergone comprehensive architectural hardening and regression testing:
+1. **Timezone-Safe Subscription Expiration:** Replaced naive datetime logic with UTC ISO-8601 timestamps (`datetime.now(timezone.utc)`), ensuring automated expiration calculations operate consistently across all serverless runtimes.
+2. **Malformed Webhook Payload Protection:** Encapsulated webhook JSON decoding in structured exception handling, returning `WebhookEventResult(success=False)` instead of unhandled crashes.
+3. **Provider Factory Aliasing:** Extended provider routing in `factory.py` to seamlessly recognize `sandbox`, `mock`, `stripe_sandbox`, and `razorpay_sandbox` aliases.
+4. **Dedicated Cancellation API:** Implemented `@router.post("/payments/cancel")` across FastAPI and HTTP servers alongside `StockAPI.cancelSubscription(userId)` in the frontend.
+5. **Surgical Subscription Teardown:** Added `delete_subscription(user_id)` methods to `BaseEntitlementStore` and `PostgresSupabaseEntitlementStore` for isolated user cleanups.
+6. **Replay Attack & Duplicate Protection:** Audit logging in `processed_webhook_events` prevents double-crediting on duplicate webhook deliveries.
+7. **Cross-Instance State Durability:** Subscription records persist in Supabase PostgreSQL, ensuring consistent access state regardless of cold starts.
+8. **Safe Production-Disabled State:** Unconfigured provider queries fail safely with HTTP 400 `PAYMENTS_NOT_CONFIGURED`.
 
 ---
 
@@ -291,7 +303,7 @@ Executed in Supabase PostgreSQL:
 
 ### Automated Backend Regression Suite
 - **Command:** `python -X utf8 -m unittest discover -v -s backend/tests -p "test_*.py"`
-- **Result:** **122 / 122 Tests PASS** (0 failures, 0 errors, duration: 124.6s).
+- **Result:** **127 / 127 Tests PASS** (0 failures, 0 errors, duration: 161.6s).
 - **Test Areas Covered:**
   - Data quality and historical series validation
   - Ridge, XGBoost, and LSTM model execution
@@ -300,15 +312,23 @@ Executed in Supabase PostgreSQL:
   - Diebold-Mariano statistical hypothesis testing
   - NIFTY 50 trending universe and scoring determinism
   - News NLP sentiment scoring and cache partitioning
-  - Payment persistence, webhook signature verification, and idempotency
+  - Payment persistence, webhook signature verification, cancellation API, and idempotency (8/8 persistence tests, 21/21 infrastructure tests)
   - Vercel serverless deployment entrypoints and health endpoints
+
+### Payment Persistence Suite
+- **Command:** `python -X utf8 -m unittest -v backend.tests.test_payment_persistence`
+- **Result:** **8 / 8 Tests PASS** (0.010s).
 
 ### Frontend Production Build
 - **Command:** `npm run build` (within `frontend/`)
-- **Result:** **PASS** (0 TypeScript errors, Vite production bundle generated).
+- **Result:** **PASS** (0 TypeScript errors, Vite production bundle generated in 3.47s).
 
 ### Browser QA
 - Interactively verified across all 11 core routes: Dashboard, Forecast, Technical Analysis, Sentiment, Comparison, Watchlist, Model Performance, Pricing, Settings, Help & Support, and About.
+
+### Production Smoke Test
+- **Live Production URL:** `https://stock-sense-ai-eight.vercel.app`
+- **Result:** **PASS** (20 / 20 endpoints and routes verified HTTP 200).
 
 ---
 
@@ -346,6 +366,8 @@ Executed in Supabase PostgreSQL:
 ## 20. Git Release Checkpoints
 
 ```text
+3a89e25 Harden payment infrastructure and sandbox lifecycle (Latest verified payment/release checkpoint)
+578802e Update final product validation roadmap
 41b121f Finalize UI polish and release hardening
 47bcd4b Configure 60s maxDuration for serverless ML execution in vercel.json
 5af8be3 Add model-performance route alias for seamless deep-linking
@@ -363,14 +385,17 @@ cc4c7aa Add persistent payment entitlements with Supabase
 
 ## 21. Current Remaining Work
 
-1. **Sandbox Payment End-to-End Validation** 🟡
-   Conduct simulated checkout and webhook lifecycle testing across all tier transitions.
-2. **Final Vercel Deployment & Commit Correspondence Verification** 🟡
-   Confirm deployment synchronicity with the latest documentation commit.
-3. **Final Documentation & Portfolio Demo Preparation** 🔵
-   Prepare final demonstration videos and architecture walkthrough documents.
-4. **Real-Money Stripe / Razorpay Activation** 🔴
-   Strictly blocked and intentionally disabled.
+- 🟢 **Sandbox Payment Lifecycle** — COMPLETE (Verified mock checkout, webhook parsing, and plan upgrades).
+- 🟢 **Payment Infrastructure Hardening** — COMPLETE (Timezone normalization, cancellation API, error handling, surgical teardown).
+- 🟢 **Supabase Persistence** — COMPLETE (8/8 persistence tests, real-world database durability, webhook idempotency).
+- 🟢 **Backend Regression Suite** — COMPLETE (127/127 tests PASS).
+- 🟢 **Frontend Production Build** — COMPLETE (TypeScript compilation and Vite build PASS).
+- 🟢 **Production Deployment** — VERIFIED (Vercel serverless runtime and SPA smoke-tested).
+- 🔴 **Real-Money Stripe / Razorpay Activation** — INTENTIONALLY DISABLED (Real financial processing strictly blocked).
+
+### 🔵 Future Work & Post-Release Enhancements
+1. **Optional Production Payment Onboarding:** If the platform transitions to a commercial SaaS model, configure live provider keys and webhooks.
+2. **Advanced Modeling Extensions:** Integration of TFT and Deep RL models as outlined in the future roadmap.
 
 ---
 
